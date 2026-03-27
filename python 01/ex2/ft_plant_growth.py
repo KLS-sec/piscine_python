@@ -1,25 +1,30 @@
 #!/usr/bin/env python3
-# if __name__ == "__main__":
-
-# print(), range(), round()
 
 def main() -> None:
     class Plant:
-        def __init__(self, name, height, age):
+        def __init__(self, name: str, height: int, days: int):
             self.name = name
             self.height = height
-            self.age = age
+            self.days = days
 
-        def show(self):
-            print(f"{self.name}: {self.height}cm, {self.age} days old")
+        def grow(self: float) -> float:
+            return (self.height + (0.8 * self.time))
 
-    print("=== Garden Plant Registry ===")
+        def age(self: int) -> int:
+            return (self.days + self.time)
+
+        def show(self, time: int):
+            self.time = time
+            print(self.name, ": ", self.grow(), "cm, ", self.age(),
+                  " days old", sep="")
+
+    x = range(0, 7)
+    print("=== Garden Plant Growth ===")
     p1 = Plant("Rose", 25, 30)
-    p1.show()
-    p1 = Plant("Sunflower", 80, 45)
-    p1.show()
-    p1 = Plant("Cactus", 15, 120)
-    p1.show()
+    for n in x:
+        print("=== Day ", n + 1, " ===", sep="")
+        p1.show(n)
+    print("Growth this week: ", round(n * 0.8, 2), "cm", sep="")
 
 
 if __name__ == "__main__":
