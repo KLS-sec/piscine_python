@@ -1,57 +1,61 @@
 #!/usr/bin/env python3
 
-def main() -> None:
-    class Plant:
-        def __init__(self, name: str, height: float, age: int):
-            self._name = name
-            self._height = height
+class Plant:
+    def __init__(self, name: str, height: float, age: int) -> None:
+        self._name = name
+        self._height = float(height)
+        self._age = age
+
+    def get_age(self):
+        return (self._age)
+
+    def get_height(self):
+        return (float(self._height))
+
+    def set_age(self, age):
+        if age < 0:
+            print(self._name, ":Error, age can't be negative")
+            print("Age update rejected")
+        else:
             self._age = age
+            print("Age updated: ", self._age, " days", sep="")
 
-        def get_name(self):
-            return self._name
+    def set_height(self, height):
+        if height < 0:
+            print(self._name, ":Error, height can't be negative")
+            print("Height update rejected")
+        else:
+            self._height = float(height)
+            print("Height updated: ", self._height, "cm", sep="")
 
-        def get_height(self):
-            return self._height
+    def grow(self, days) -> None:
+        self._height += (days * 0.8)
 
-        def set_height(self, updated_height):
-            if updated_height >= 0:
-                self._height = updated_height
-                print("Height updated:", self._height, "cm")
+    def age(self, days) -> None:
+        self._age += days
 
-            else:
-                print(self._name, ": Error, height can't be negative", sep="")
-                print("Height update rejected")
+    def show(self) -> None:
+        print(self._name, ": ", round(self._height, 2), "cm, ",
+              self._age, " days old",
+              sep="")
 
-        def get_age(self):
-            return self._age
 
-        def set_age(self, update_age):
-            if update_age >= 0:
-                self._age = update_age
-                print("Age updated:", self._age, "days")
-            else:
-                print(self._name, ": Error, age can't be negative", sep="")
-                print("Age update rejected")
-
-        def show(self, time: int):
-            self.time = time
-            print(self._name, ": ", self.get_height(), "cm, ", self.get_age(),
-                  " days old", sep="")
-
+def main() -> None:
+    p1 = Plant("Rose", 15.0, 10)
     print("=== Garden Security System ===")
-    p1 = Plant("Rose", 15, 10)
     print("Plant created: ", end="")
-    p1.show(0)
+    p1.show()
     print("")
-    p1.set_height(-25)
-    p1.set_age(30)
+    p1.set_height(25)
+    p1.set_age(-30)
     print("")
     print("Current state: ", end="")
-    p1.show(0)
+    p1.show()
 
 
 if __name__ == "__main__":
     main()
+
 
 """
 class Book:
