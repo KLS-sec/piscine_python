@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-def input_temperature(temp_str) -> int:
-    if int(temp_str) > 40:
+def input_temperature(temp_str: str) -> int:
+    temp = int(temp_str)
+    if temp > 40:
         raise ValueError(f"{temp_str}°C is too hot for plants (max 40°C)")
-    if int(temp_str) < 0:
+    if temp < 0:
         raise ValueError(f"{temp_str}°C is too cold for plants (min 0°C)")
-    return int(temp_str)
+    return temp
 
 
 def test_temperature() -> None:
@@ -27,3 +28,7 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+"""
+checked with gpt
+"""
