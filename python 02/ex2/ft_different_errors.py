@@ -29,7 +29,8 @@ def test_error_types() -> None:
 
     try:
         garden_operations(0)
-    except (ValueError, TypeError) as err:
+    except (ValueError, ZeroDivisionError, FileNotFoundError,
+            TypeError) as err:
         print(f"\nMltiples errors test: {err}")
 
     print("\nAll error types tested successfully!")
@@ -42,10 +43,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-
-"""
-mypy will display an error for the faulty code that raises the
-TypeError. That’s its job! So, to test this exception, we need
-to keep this error on purpose.
-"""
