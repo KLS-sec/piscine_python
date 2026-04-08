@@ -6,10 +6,10 @@ class Plant:
         self._height = height
         self._age = age
 
-    def grow(self, days) -> None:
+    def grow(self, days: int) -> None:
         self._height += (days * 0.8)
 
-    def age(self, days) -> None:
+    def age(self, days: int) -> None:
         self._age += days
 
     def show(self) -> None:

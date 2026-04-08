@@ -6,13 +6,13 @@ class Plant:
         self._height = float(height)
         self._age = age
 
-    def get_age(self):
+    def get_age(self) -> int:
         return (self._age)
 
-    def get_height(self):
+    def get_height(self) -> float:
         return (float(self._height))
 
-    def set_age(self, age):
+    def set_age(self, age) -> None:
         if age < 0:
             print(self._name, ":Error, age can't be negative")
             print("Age update rejected")
@@ -20,7 +20,7 @@ class Plant:
             self._age = age
             print("Age updated: ", self._age, " days", sep="")
 
-    def set_height(self, height):
+    def set_height(self, height) -> None:
         if height < 0:
             print(self._name, ":Error, height can't be negative")
             print("Height update rejected")
@@ -48,7 +48,7 @@ class Flower(Plant):
         super().__init__(name, height, age)
         self._color = color
 
-    def bloom(self, bin):
+    def bloom(self, bin) -> None:
         if bin:
             print("", self._name, "is blooming beautifully!")
         else:
@@ -88,9 +88,9 @@ class Vegetable(Plant):
         self._harvest_season = harvest_season
         self._nutritional_value = nutritional_value
 
-    def age(self, days):
-        super().age(days)
-        self._nutritional_value += days
+    def age(self, _days) -> None:
+        super().age(_days)
+        self._nutritional_value += _days
 
     def show(self) -> None:
         super().show()
@@ -105,14 +105,20 @@ def main() -> None:
     F = Flower("Rose", 15, 10, "red")
     T = Tree("Oak", 200, 365, 5)
     V = Vegetable("Tomato", 5, 10, "April", 0)
-    print("===", F.__class__.__name__)
+    print("\n===", F.__class__.__name__)
+    F.show()
+    F.bloom(False)
+    print("[asking the rose to bloom]")
     F.show()
     F.bloom(True)
-    print("===", T.__class__.__name__)
+    print("\n===", T.__class__.__name__)
     T.show()
+    T.produce_shade(False)
+    print("[asking the oak to produce shade]")
     T.produce_shade(True)
-    print("===", V.__class__.__name__)
+    print("\n===", V.__class__.__name__)
     V.show()
+    print("[make tomato grow and age for 20 days]")
     V.age(20)
     V.grow(20)
     V.show()

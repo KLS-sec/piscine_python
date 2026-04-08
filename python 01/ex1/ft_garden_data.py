@@ -26,14 +26,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-
-"""
-plants = [
-    Plant("Rose", 25, 30),
-    Plant("Sunflower", 80, 45),
-    Plant("Cactus", 15, 120)
-]
-for p in plants:
-    p.show()
-"""

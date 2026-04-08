@@ -6,10 +6,10 @@ class Plant:
         self._height = float(height)
         self._age = age
 
-    def grow(self, days) -> None:
+    def grow(self, days: int) -> None:
         self._height += (days * 0.8)
 
-    def age(self, days) -> None:
+    def age(self, days: int) -> None:
         self._age += days
 
     def show(self) -> None:
@@ -19,6 +19,7 @@ class Plant:
 
 
 def main() -> None:
+    print("=== Plant Factory Output ===")
     plants = [  # List
         Plant("Rose", 25, 30),  # Instance / object
         Plant("Oak", 200, 365),

@@ -13,11 +13,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-"""
-    print("=== Welcome to My {} ===".format("Garden"))
-    print("Plant: ", name)
-    print(f"Height: {height}cm")
-    print("Age: {} days".format(age))
-    print("=== End of Program ===")
-"""
