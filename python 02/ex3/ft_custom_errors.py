@@ -61,13 +61,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-"""
-if __name__ == "__main__":
-    main()
-"""
-
-"""
-https://www.programiz.com/python-programming/user-defined-exception
-https://www.geeksforgeeks.org/python/define-custom-exceptions-in-python/
-"""

@@ -27,8 +27,8 @@ def water_test() -> None:
 ###########################################################
 
 
-def water_plant(plant_name) -> None:
-    if 'A' <= plant_name[0] <= 'Z':
+def water_plant(plant_name: str) -> None:
+    if plant_name == plant_name.capitalize():
         print(f"Watering {plant_name}: [OK]")
     else:
         raise PlantError(f"Invalid plant name to water: '{plant_name}'")
@@ -61,10 +61,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-"""
-if __name__ == "__main__":
-    main()
-
-print(), str.capitalize()
-"""

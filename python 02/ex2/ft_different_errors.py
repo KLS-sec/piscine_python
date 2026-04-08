@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-def garden_operations(operation_number) -> None:
+def garden_operations(operation_number: int) -> None:
     if operation_number == 0:
         int("abc")                  # ValueError
     elif operation_number == 1:
@@ -29,8 +29,7 @@ def test_error_types() -> None:
 
     try:
         garden_operations(0)
-    except (ValueError, ZeroDivisionError, FileNotFoundError,
-            TypeError) as err:
+    except (ValueError, TypeError) as err:
         print(f"\nMltiples errors test: {err}")
 
     print("\nAll error types tested successfully!")
@@ -43,3 +42,9 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+"""
+mypy will display an error for the faulty code that raises the
+TypeError. That’s its job! So, to test this exception, we need
+to keep this error on purpose.
+"""
