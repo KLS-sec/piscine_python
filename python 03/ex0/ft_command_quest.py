@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import sys
 
-"""
+
 def main():
     args = sys.argv
     i = 1
@@ -20,25 +20,6 @@ def main():
 if __name__ == "__main__":
     main()
 """
-
-
-def main():
-    args = sys.argv
-    print("=== Command Quest ===")
-    print(f"Program name: {args[0]}")
-    if len(args) < 2:
-        print("No arguments provided!")
-    else:
-        print(f"Arguments received: {len(args) - 1}")
-        for i, x in enumerate(args[1:], start=1):
-            print(f"Argument {x}: {i}")
-    print(f"Total arguments: {len(args)}")
-
-
-if __name__ == "__main__":
-    main()
-
-"""
 import sys, sys.argv, len(), print()
 
 how programs can receive messages from their users
@@ -55,4 +36,17 @@ if __name__ == "__main__":
     main()
 
 args = sys.argv[:1] to ignore program name
-"""
+
+def main():
+    args = sys.argv
+    print("=== Command Quest ===")
+    print(f"Program name: {args[0]}")
+    if len(args) < 2:
+        print("No arguments provided!")
+    else:
+        print(f"Arguments received: {len(args) - 1}")
+        for i, x in enumerate(args[1:], start=1):
+            print(f"Argument {x}: {i}")
+    print(f"Total arguments: {len(args)}")
+
+    """
