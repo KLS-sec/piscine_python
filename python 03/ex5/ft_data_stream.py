@@ -5,19 +5,28 @@ from typing import Generator
 
 def gen_event() -> Generator[tuple[str, str], None, None]:
     players = ["alice", "bob", "charlie", "dylan"]
-    actions = ["run", "eat", "sleep", "grab", "move", "climb", "swim", "release", "use"]
+    actions = ["run", "eat", "sleep", "grab", "move", "climb", "swim",
+               "release", "use"]
 
     while True:
         yield (random.choice(players), random.choice(actions))
 
 
-
-def next():
-    pass
-
-
 def main() -> None:
-    pass
+    print("=== Game Data Stream Processor ===")
+    i = 0
+    gevent = gen_event()
+    while i < 5:
+        i += 1
+        name, action = next(gevent)
+        print(f"Event {i}: Player {name} did action {action}")
+
+    i = 0
+    list_ten = []
+    for x in range(10):
+        list_ten.append(next(gevent))
+
+    print(f"Built list of 10 events: {list_ten}")
 
 
 if __name__ == "__main__":
