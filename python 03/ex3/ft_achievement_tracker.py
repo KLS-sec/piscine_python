@@ -8,7 +8,7 @@ achievement = ['Crafting Genius', 'Strategist', 'World Savior', 'Speed Runner',
                'Boss Slayer', 'Bronze', 'Silver', 'Gold', 'Platinum']
 
 
-def gen_player_achievement() -> set:
+def gen_player_achievement() -> set[str]:
     player_set = set()
     i = 0
     while i < 5:

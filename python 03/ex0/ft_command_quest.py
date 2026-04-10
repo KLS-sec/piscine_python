@@ -2,7 +2,7 @@
 import sys
 
 
-def main():
+def main() -> None:
     args = sys.argv
     i = 1
     print("=== Command Quest ===")
