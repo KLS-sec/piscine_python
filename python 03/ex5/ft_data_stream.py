@@ -32,7 +32,6 @@ def main() -> None:
     list_ten = []
     for _ in range(10):
         list_ten.append(next(gevent))
-
     print(f"Built list of 10 events: {list_ten}")
 
     for event in consume_event(list_ten):
