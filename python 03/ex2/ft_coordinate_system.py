@@ -26,8 +26,7 @@ def get_player_pos() -> tuple[float, float, float]:
 def distance(t1: tuple[float, float, float],
              t2: tuple[float, float, float]) -> float:
     result = sqrt(
-        (t2[0] - t1[0]) ** 2 + (t2[1] - t1[1]) ** 2 + (t2[2] - t1[2]) ** 2
-        )
+        (t2[0] - t1[0]) ** 2 + (t2[1] - t1[1]) ** 2 + (t2[2] - t1[2]) ** 2)
     return result
 
 
@@ -39,7 +38,7 @@ def main() -> None:
     print(f"Got a first tuple: {set_one}")
     print(f"It includes: X={set_one[0]}, Y={set_one[1]}, Z={set_one[2]}")
 
-    center = (0.0, 2.5 - 2.5, 0.0) 
+    center = (0.0, 2.5 - 2.5, 0.0)
     dist_center = distance(set_one, center)
     print(f"Distance to center: {round(dist_center, 4)}")
 
