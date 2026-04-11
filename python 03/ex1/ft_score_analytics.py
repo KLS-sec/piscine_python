@@ -12,12 +12,12 @@ def main() -> None:
     for x in args:
         try:
             arg_values.append(int(x))
-        except Exception:
+        except ValueError:
             print(f"Invalid parameter: '{x}'")
 
     if len(arg_values) == 0:
         print("No scores provided. Usage: python3 ft_score_analytics.py"
-              "<score1> <score2> ...")
+              " <score1> <score2> ...")
         return
 
     total_players: int = len(arg_values)
@@ -30,7 +30,7 @@ def main() -> None:
     print(f"Scores processed: {arg_values}")
     print(f"Total players: {total_players}")
     print(f"Total score: {total_score}")
-    print(f"Average score: {average_score}")
+    print(f"Average score: {round(average_score, 1)}")
     print(f"High score: {high_score}")
     print(f"Low score: {low_score}")
     print(f"Score range: {score_range}")

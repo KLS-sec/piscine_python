@@ -34,14 +34,14 @@ def main() -> None:
     print("\nCommon achievements:",
           f"{alice_set.intersection(bob_set, charlie_set, dylan_set)}")
 
-    print(f"\nOnly Alice has: {alice_set.difference(bob_set, charlie_set,
-                                                    dylan_set)}")
-    print(f"Only Bob has: {bob_set.difference(alice_set, charlie_set,
-                                              dylan_set)}")
-    print(f"Only Charlie has: {charlie_set.difference(alice_set, bob_set,
-                                                      dylan_set)}")
-    print(f"Only Dylan has: {dylan_set.difference(alice_set, bob_set,
-                                                  charlie_set)}")
+    print(f"\nOnly Alice has: "
+          f"{alice_set.difference(bob_set, charlie_set, dylan_set)}")
+    print(f"Only Bob has: "
+          f"{bob_set.difference(alice_set, charlie_set, dylan_set)}")
+    print(f"Only Charlie has: "
+          f"{charlie_set.difference(alice_set, bob_set, dylan_set)}")
+    print(f"Only Dylan has: "
+          f"{dylan_set.difference(alice_set, bob_set, charlie_set)}")
 
     print(f"\nAlice is missing: {all_achievements.difference(alice_set)}")
     print(f"Bob is missing: {all_achievements.difference(bob_set)}")

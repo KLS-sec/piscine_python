@@ -16,8 +16,7 @@ def consume_event(
      targets: list[tuple[str, str]]) -> Generator[tuple[str, str], None, None]:
     while len(targets) > 0:
         arrow = random.randint(0, len(targets) - 1)
-        touch = targets.pop(arrow)
-        yield touch
+        yield targets.pop(arrow)
 
 
 def main() -> None:
