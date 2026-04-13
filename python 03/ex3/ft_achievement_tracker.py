@@ -11,7 +11,7 @@ achievement = ['Crafting Genius', 'Strategist', 'World Savior', 'Speed Runner',
 def gen_player_achievement() -> set[str]:
     player_set = set()
     i = 0
-    while i < 5:
+    while i < 8:  # number of attempt
         player_set.add(random.choice(achievement))
         i += 1
     return player_set
