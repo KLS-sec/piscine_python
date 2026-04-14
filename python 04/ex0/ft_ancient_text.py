@@ -4,13 +4,45 @@ import sys
 from typing import IO
 
 
-if __name__ == "__main__":
-    main()
+def main() -> None:
+    if len(sys.argv) != 2:
+        print("Usage: ft_ancient_text.py <file>")
+        return
+
+    print("=== Cyber Archives Recovery ===")
+    print(f"Accessing file '{sys.argv[1]}'")
+
+    try:
+        file: IO[str] = open(sys.argv[1], "rt")
+    except Exception as err:
+        print(f"Error opening file '{sys.argv[1]}': {err}")
+        return
+
+    print("---\n")
+    print(f"{file.read()}", end="")
+    print("\n---")
+    file.close()
+    print(f"File '{sys.argv[1]}' closed.")
 
 
-import sys
-from typing import IO
+"""
+AI checked
+mypy
+flake8
 
+
+import sys, sys.argv, len(), open(), import typing, typing.IO,
+io.read(), io.close(), print()
+
+V 1 utiliser argv pour print le nom du fichier
+V 2 gerer pb d argv
+V 3 header + accessing file
+V 4 gerer les differents types d erreurs
+V 5 afficher le nom du fichier (voir phrase exemple)
+V 6 afficher contenus
+V 7 footer (conditionnel)
+
+X fermeture (dois arriver dans tt les cas si ouverture a eu lieu)
 
 def read_file(filename: str) -> None:
     file: IO
@@ -44,8 +76,11 @@ def main() -> None:
         return
 
     read_file(sys.argv[1])
-
+"""
 
 if __name__ == "__main__":
     main()
+
+
+"""
 """
