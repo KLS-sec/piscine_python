@@ -4,25 +4,29 @@ import sys
 from typing import IO
 
 
-def main() -> None:
-    if len(sys.argv) != 2:
-        print("Usage: ft_ancient_text.py <file>")
-        return
-
+def extractor(filename: str) -> None:
     print("=== Cyber Archives Recovery ===")
-    print(f"Accessing file '{sys.argv[1]}'")
+    print(f"Accessing file '{filename}'")
 
     try:
-        file: IO[str] = open(sys.argv[1], "rt")
+        file: IO[str] = open(filename, "rt")
     except Exception as err:
-        print(f"Error opening file '{sys.argv[1]}': {err}")
+        print(f"Error opening file '{filename}': {err}")
         return
 
     print("---\n")
     print(f"{file.read()}", end="")
     print("\n---")
     file.close()
-    print(f"File '{sys.argv[1]}' closed.")
+    print(f"File '{filename}' closed.")
+
+
+def main() -> None:
+    if len(sys.argv) != 2:
+        print("Usage: ft_ancient_text.py <file>")
+        return
+
+    extractor(sys.argv[1])
 
 
 """
