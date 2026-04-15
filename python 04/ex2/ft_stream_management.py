@@ -43,8 +43,6 @@ def main() -> None:
     print(transformed)
     print("---")
 
-
-#########################
     print("Enter new file name (or empty): ", end="")
     sys.stdout.flush()  # buffer problem when print does not end with "\n"
     new_file_name: str = sys.stdin.readline().rstrip("\n")
@@ -67,44 +65,5 @@ def main() -> None:
     print(f"Data saved in file '{new_file_name}'")
 
 
-"""
-############################
-# input without input()
-    print("Enter new file name (or empty): ", end="")
-    new_file_name: str = sys.stdin.readline().rstrip("\n")
-
-    if new_file_name == "":
-        print("Not saving data.")
-        return
-
-    print(f"Saving data to '{new_file_name}'")
-
-    try:
-        file: IO[str] = open(new_file_name, "w")
-        file.write(transformed)
-        file.close()
-    except Exception as err:
-        sys.stderr.write(f"[STDERR] Error opening file '{new_file_name}': "
-                         f"{err}\n")
-        print("Data not saved.")
-        return
-##############################
-"""
-
 if __name__ == "__main__":
     main()
-
-
-"""
-import sys, sys.argv, sys.stdin, sys.stdout, sys.stderr, len(),
-open(), import typing, typing.IO, io.read(), io.readline(), io.write(),
-io.flush(), io.close(), print()
-
-Mission Briefing: The Archives operate through three sacred data channels that have
-been active since the founding of digital civilization. Master these channels that are older
-than the Internet itself!
-Use the code created for the previous exercise. Update it to:
-• Print error messages resulting from exceptions to the error output stream instead
-of to the standard output, with a clear prefix (see example)
-• Get user input without using the input() built-in function.
-"""
