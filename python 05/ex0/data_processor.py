@@ -1,8 +1,312 @@
 #!/usr/bin/env python3
 
+# everything checked multiple times even with GPT
+# no useless recheck except emptying comments
+
 from abc import ABC, abstractmethod
 from typing import Any, Union
 
+
+class DataProcessor(ABC):
+    def __init__(self) -> None:
+        self._storage: list[str] = []
+        self._counter: int = 0
+
+    @abstractmethod
+    def validate(self, data: Any) -> bool:
+        pass
+
+    @abstractmethod
+    def ingest(self, data: Any) -> None:
+        pass
+
+    def output(self) -> tuple[int, str]:
+        if not self._storage:
+            raise Exception("No data to output")
+        rank = self._counter - len(self._storage)
+        value = self._storage.pop(0)
+        return (rank, value)
+
+
+"""
+output:
+-output(self) -> tuple[int, str]
+-extract the data and erase it (.pop())
+-give the rank (chronological order) of what was extracted
+(addition perso: garder un compteur du total, un compteur qui augmente a chaque
+call pour donner le rang (1-2-3...) plus simple pour garder le compte et permet
+de savoir combien il y a eu d input)
+"""
+###########################################
+
+
+NumInput = Union[int, float, list[Union[int, float]]]
+
+
+class NumericProcessor(DataProcessor):
+    def validate(self, data: Any) -> bool:
+        if isinstance(data, (int, float)):
+            return True
+        if isinstance(data, list):
+            return all(isinstance(x, (int, float)) for x in data)
+        return False
+
+    def ingest(self, data: NumInput) -> None:
+        if not self.validate(data):
+            raise Exception("Improper numeric data")
+        if isinstance(data, list):
+            for x in data:
+                self._storage.append(str(x))
+                self._counter += 1
+            return
+        self._storage.append(str(data))
+        self._counter += 1
+
+
+TxtInput = str | list[str]
+# modern version for union
+
+
+class TextProcessor(DataProcessor):
+    def validate(self, data: Any) -> bool:
+        if isinstance(data, str):
+            return True
+        if isinstance(data, list):
+            return all(isinstance(x, str) for x in data)
+        return False
+
+    def ingest(self, data: TxtInput) -> None:
+        if not self.validate(data):
+            raise Exception("Improper text data")
+
+        if isinstance(data, list):
+            for x in data:
+                self._storage.append(str(x))
+                self._counter += 1
+            return
+        self._storage.append(str(data))
+        self._counter += 1
+
+
+LogInput = Union[dict[str, str], list[dict[str, str]]]
+
+
+class LogProcessor(DataProcessor):
+    def validate(self, data: Any) -> bool:
+        if isinstance(data, dict):
+            return all(isinstance(a, str) and isinstance(b, str)
+                       for a, b in data.items())
+        if isinstance(data, list):
+            return all(isinstance(x, dict) and
+                       all(isinstance(a, str) and isinstance(b, str)
+                       for a, b in x.items()) for x in data)
+        return False
+
+    def ingest(self, data: LogInput) -> None:
+        if not self.validate(data):
+            raise Exception("Improper log data")
+
+        def auto_extract(data: dict[str, str]) -> str:
+            return (f"{data.get('log_level', '')}:"
+                    f" {data.get('log_message', '')}")
+
+        if isinstance(data, list):
+            for x in data:
+                self._storage.append(auto_extract(x))
+                self._counter += 1
+            return
+        # two different versions to test things
+        self._storage.append(f"{data.get('log_level', '')}: "
+                             f"{data.get('log_message', '')}")
+        self._counter += 1
+
+
+# ---------- TEST ----------
+
+def main() -> None:
+    print("=== Code Nexus - Data Processor ===")
+
+    num = NumericProcessor()
+    txt = TextProcessor()
+    log = LogProcessor()
+
+    print("\nTesting Numeric Processor...")
+    print("Trying to validate input '42':", num.validate(42))
+    print("Trying to validate input 'Hello':", num.validate("Hello"))
+
+    try:
+        print("Test invalid ingestion of string 'foo' without prior "
+              "validation:")
+        num.ingest("foo")  # type: ignore
+    except Exception as e:
+        print("Got exception:", e)
+    print("Processing data: [1, 2, 3, 4, 5]")
+    num.ingest([1, 2, 3, 4, 5])
+    print("Extracting 3 values...")
+    for _ in range(3):
+        r, v = num.output()
+        print(f"Numeric value {r}: {v}")
+
+    print("\nTesting Text Processor...")
+    print("Trying to validate input '42':", txt.validate(42))
+    print("Processing data: ['Hello', 'Nexus', 'World']")
+    txt.ingest(["Hello", "Nexus", "World"])
+    print("Extracting 1 value...")
+    r, v = txt.output()
+    print(f"Text value {r}: {v}")
+
+    print("\nTesting Log Processor...")
+    print("Trying to validate input 'Hello': ", log.validate("Hello"))
+    logs = [
+        {"log_level": "NOTICE", "log_message": "Connection to server"},
+        {"log_level": "ERROR", "log_message": "Unauthorized access!!"},
+    ]
+    print(f"Processing data:{logs}")
+    print("Extracting 2 values...")
+    log.ingest(logs)
+    for _ in range(2):
+        r, v = log.output()
+        print(f"Log entry {r}: {v}")
+
+
+if __name__ == "__main__":
+    main()
+
+
+"""
+https://www.geeksforgeeks.org/python/abstract-classes-in-python/
+https://docs.python.org/3/library/abc.html
+
+builtins, standard types, import typing, import abc
+
+imports:
+from abc import ABC, abstractmethod
+from typing import Any, Union
+Any for any kind of input, Union for the pseudo type
+
+
+DataProcessor:
+V -abstract class
+V -inherit from ABC
+V -will have 3 children: NumericProcessor, TextProcessor, LogProcessor
+    they inherit the elements but will treat different kind of data
+V -2 abstract methods (must be overwriten by the children)
+   -validate: check if the received data is correct(for the child using it)
+   -ingest: process the data
+-1 standard method:
+    output: output the ingested data
+
+V in the children:
+    validate:
+    -validate(self, data: Any) -> bool
+    -Any to take any input
+    -bool return if the data can be ingested or not
+
+V ingest:
+VVV -ingest(self, data: Any) -> None
+VVV -call validate and raise the exception if it return false
+VVV -convert final result into string (if needed)
+VVV -store it chronologically (extracted by output using pop())
+    NumericProcessor:
+    -int, float, list including both types
+    TextProcessor
+    -str, lists of strings
+    LogProcessor
+    -dict of string key-value pairs, and lists of that type
+
+V output:
+-output(self) -> tuple[int, str]
+-extract the data and erase it (.pop())
+-give the rank (chronological order) of what was extracted
+
+tests:
+-crate an instance of each specialised class
+-tester validation avec des donnee ok ou mauvaises pour chaques classe
+-1 test foireux avec un ingest
+-divers test ok avec ingest
+
+•All code must include comprehensive type annotations.
+Check this using mypy .
+•Exception handling should protect the data streams from corruption.
+•Authorized imports: abc and typing .
+•All standard classes and collections are authorized, along with their
+methods (int, str, list, dict, etc.).
+•All built-in functions are authorized.
+
+During evaluation, you may be asked to explain polymorphic behavior,
+demonstrate method overriding, extend your systems with new data
+types, or modify processing behavior. Make sure you understand how
+inheritance enables code reuse while allowing behavioral specialization.
+"""
+####################################################################
+"""
+PERSONNAL NOTES:
+
+excelent tuto:
+https://www.geeksforgeeks.org/python/abstract-classes-in-python/
+
+-abstract classes:
+cannot be used as is, must be inherited then use the child
+
+-abstract method:
+method that exist in the parent class but must be overwriten
+or it will raise an error. The goal i to force the childrens
+to have that method, bust specialised with all of them
+(all animals must have a .sound(), but they all return a
+different print)
+
+-concrete method:
+A method inheritable and usable normally
+
+-abstract properties:
+properties that has to be defined for every child but may be
+different for all
+
+class Animal(ABC):
+    @property
+    @abstractmethod
+    def species(self):
+        pass
+class Dog(Animal):
+    @property
+    def species(self):
+        return "Canine"
+
+------
+
+NumericInput = Union[int, float, list[Union[int, float]]]
+an artificial type, so you can type hint "object: NumericInput"
+and the type will be accepted as either int, float or a list of int or float
+
+expanded form:
+NumericInput = int | float | list[int | float]
+
+------
+
+try -> except
+it catch the error and continue the program, "raise" alone will interupt
+the program.
+try will raise automatically then except catch it
+raise can be called manually to provoaue the same thing but if not caught
+by an except it will interupt the function
+
+------
+
+all(isinstance(x, (int, float)) for x in data)
+
+all()
+check if everything in it is true, if any false then it return false
+you can operate and return in it
+
+isinstance(x, (int, float)
+check if x is an int or float, returne False if it's not
+
+isinstance(data, list[dict]):
+dose not work, the [dict] will only be read by mypy as a type int,
+ignored by isinstance
+"""
+####################################################################
+"""
 
 class DataProcessor(ABC):
     def __init__(self) -> None:
@@ -80,7 +384,7 @@ class TextProcessor(DataProcessor):
 # ---------- LOG ----------
 
 LogDict = dict[str, str]
-LogInput = Union[LogDict, list[LogDict]]
+# LogInput = Union[LogDict, list[LogDict]]
 
 
 class LogProcessor(DataProcessor):
@@ -150,23 +454,14 @@ def main() -> None:
         {"log_level": "NOTICE", "log_message": "Connection to server"},
         {"log_level": "ERROR", "log_message": "Unauthorized access!!"},
     ]
+    print(f"Processing data:{logs}")
     log.ingest(logs)
     for _ in range(2):
         r, v = log.output()
         print(f"Log entry {r}: {v}")
-
-
-if __name__ == "__main__":
-    main()
-
-
 """
-https://www.geeksforgeeks.org/python/abstract-classes-in-python/
-https://docs.python.org/3/library/abc.html
-
-
-builtins, standard types, import typing, import abc
-
+##############################################################
+"""
 This exercise requires the use of abstract classes using ABC (Abstract Base
 Class). We will first create separate classes that share common interfaces.
 In the next exercise, they will be unified in the same workflow.
@@ -174,6 +469,7 @@ In the next exercise, they will be unified in the same workflow.
 Set up the following architecture:
 • An abstract class DataProcessor that inherits from ABC and defines the
 common processing interface.
+
 • Three specialized classes NumericProcessor, TextProcessor, and
 LogProcessor that inherit from the DataProcessor class and will process
 different kinds of data.
@@ -235,47 +531,4 @@ During evaluation, you may be asked to explain polymorphic behavior,
 demonstrate method overriding, extend your systems with new data
 types, or modify processing behavior. Make sure you understand how
 inheritance enables code reuse while allowing behavioral specialization.
-"""
-################################################
-"""
-PERSONNAL NOTES:
-
-excelent tuto:
-https://www.geeksforgeeks.org/python/abstract-classes-in-python/
-
--abstract classes:
-cannot be used as is, must be inherited then use the child
-
--abstract method:
-method that exist in the parent class but must be overwriten
-or it will raise an error. The goal i to force the childrens
-to have that method, bust specialised with all of them
-(all animals must have a .sound(), but they all return a
-different print)
-
--concrete method:
-A method inheritable and usable normally
-
--abstract properties:
-properties that has to be defined for every child but may be
-different for all
-
-class Animal(ABC):
-    @property
-    @abstractmethod
-    def species(self):
-        pass
-class Dog(Animal):
-    @property
-    def species(self):
-        return "Canine"
-
-------
-
-NumericInput = Union[int, float, list[Union[int, float]]]
-an artificial type, so you can type hint "object: NumericInput"
-and the type will be accepted as either int, float or a list of int or float
-
-expanded form:
-NumericInput = int | float | list[int | float]
 """
