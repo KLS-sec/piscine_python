@@ -182,7 +182,7 @@ class DataStream():
             plugin.process_output(container)
 
 
-def main():
+def main() -> None:
     print("=== Code Nexus - Data Pipeline ===\n")
     print("Initialize Data Stream...\n")
 

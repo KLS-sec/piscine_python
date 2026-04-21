@@ -1,0 +1,161 @@
+#!/usr/bin/env python3
+
+
+######
+
+alchemy/potions.py will contain:
+• A function healing_potion() that returns the string “Healing potion brewed with ’[created earth element]’ and ’[created air element]”.
+
+• A function strength_potion() that returns the string “Strength potion brewed with ’[created fire element]’ and ’[created water element]”.
+
+• Anything else useful to access the four fundamental elements.
+
+
+In order to check these new functionalities, create the following two scripts:
+
+• ft_distillation_0.py will use the from ... import ... structure to access alchemy/potions.py directly and then brew both healing and strength potions.
+
+• ft_distillation_1.py will use the import alchemy structure to access the alchemy module, then brew the original strength potion and the special heal() potion, which is a package alias of the healing potion. You will need to improve your __init__.py
+
+######
+Exercice
+work instructions neutre
+
+1 lire l exercice (liste de choses à apprendre)
+2 remplir le work instructions
+2 Lire le w3school/autre concerne
+3 réorganiser les instructions de façon claire et compréhensible avec une
+checklist des éléments importants (utiliser checklist projet)
+X si exo long organiser la liste des choses a faire (objectif clair + feedback)
+X regarder liste pauses
+
+
+#################################
+
+[tutorials]
+• Using __init__.py, the gateway that transforms a simple folder into a magical
+package
+• Calling the code of a distant module from a distant module
+• Managing absolute vs relative imports
+• Avoiding circular dependencies
+Imports in general
+https://www.geeksforgeeks.org/python/python-import-module-from-different-directory/
+http://geeksforgeeks.org/python/absolute-and-relative-imports-in-python/
+https://www.commentcoder.com/python-fichier-init/
+https://www.reddit.com/r/learnpython/comments/1f565ru/what_can_i_put_in_init_py_to_make_them_useful/
+
+[authorized functions]
+xxx
+
+[exercise instructions - to reorganize]
+
+[general project instructions]
+• Your project must be written in Python 3.10 or later.
+• Your project must adhere to the flake8 coding standard.
+• All code must include comprehensive type annotations.
+Check this using mypy.
+• All standard classes and collections are authorized, along with their
+methods (int, str, list, dict, etc.).
+• All built-in functions are authorized, but eval() and exec().
+• Only imports of the modules and files you will create in this project
+are allowed.
+• It is forbidden to modify sys.path.
+
+All functions should be simple and return strings. Focus on
+import concepts, not complex logic.
+
+During evaluation, you may be asked to explain import
+mechanisms, demonstrate different import styles, or modify
+your alchemical laboratory. Make sure you understand the
+four sacred mysteries, not just their implementation.
+"""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PART 1  FAIT
+
+elements.py will contain:
+• A function create_fire() that just returns the string “Fire element created”.
+
+• A function create_water() that just returns the string “Water element created”.
+
+alchemy/elements.py will contain:
+• A function create_earth() that just returns the string “Earth element created”.
+
+• A function create_air() that just returns the string “Air element created”.
+
+alchemy/__init__.py will contain:
+• Anything useful to partially import the alchemy module. See ft_alembic_4.py .
+
+In order to carefully test our laboratory architecture, create the following six scripts:
+
+• ft_alembic_0.py will use the import ... structure to access elements.py directly and then create fire.
+
+• ft_alembic_1.py will use the from ... import ... structure to access elements.py directly and then create water.
+
+• ft_alembic_2.py will use the import ... structure to access alchemy/elements.py directly and then create earth.
+
+• ft_alembic_3.py will use the from ... import ... structure to access alchemy/elements.py directly and then create air.
+
+• ft_alembic_4.py will use import alchemy to access the alchemy module and then create air. The create_earth() function will not be exposed through the module interface and raise an exception when called (you can catch the exception or not, this is only for pedagogical purposes). A mypy error will also raise, again, on purpose.
+
+• ft_alembic_5.py will use the from alchemy import ... structure to access the alchemy module and then create air
