@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
 
-
+"""
 ######
 
-alchemy/potions.py will contain:
-• A function healing_potion() that returns the string “Healing potion brewed with ’[created earth element]’ and ’[created air element]”.
+Let’s improve once again our laboratory architecture and add a new component:
 
-• A function strength_potion() that returns the string “Strength potion brewed with ’[created fire element]’ and ’[created water element]”.
+Create three testing scripts to verify everything imports successfully:
+• ft_transmutation_0.py will use the import ... structure to access
+alchemy/transmutation/recipes.py directly and then achieve transformation of
+lead into gold.
 
-• Anything else useful to access the four fundamental elements.
+• ft_transmutation_1.py will use the import ... structure to import the module
+transmutation directly and then achieve transformation of lead into gold.
+• ft_transmutation_2.py will use the import ... structure to import the module
+alchemy directly and then achieve transformation of lead into gold.
 
-
-In order to check these new functionalities, create the following two scripts:
-
-• ft_distillation_0.py will use the from ... import ... structure to access alchemy/potions.py directly and then brew both healing and strength potions.
-
-• ft_distillation_1.py will use the import alchemy structure to access the alchemy module, then brew the original strength potion and the special heal() potion, which is a package alias of the healing potion. You will need to improve your __init__.py
+You may need to create and/or update a few extra files to complete these scripts.
 
 ######
 Exercice
@@ -68,7 +68,7 @@ During evaluation, you may be asked to explain import
 mechanisms, demonstrate different import styles, or modify
 your alchemical laboratory. Make sure you understand the
 four sacred mysteries, not just their implementation.
-"""
+
 
 
 
@@ -159,3 +159,4 @@ In order to carefully test our laboratory architecture, create the following six
 • ft_alembic_4.py will use import alchemy to access the alchemy module and then create air. The create_earth() function will not be exposed through the module interface and raise an exception when called (you can catch the exception or not, this is only for pedagogical purposes). A mypy error will also raise, again, on purpose.
 
 • ft_alembic_5.py will use the from alchemy import ... structure to access the alchemy module and then create air
+"""
