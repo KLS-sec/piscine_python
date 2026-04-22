@@ -3,19 +3,33 @@
 """
 ######
 
-Let’s improve once again our laboratory architecture and add a new component:
+Finally, we will add these last components in our laboratory architecture:
 
-Create three testing scripts to verify everything imports successfully:
-• ft_transmutation_0.py will use the import ... structure to access
-alchemy/transmutation/recipes.py directly and then achieve transformation of
-lead into gold.
+alchemy/grimoire/light_spellbook.py will contain:
 
-• ft_transmutation_1.py will use the import ... structure to import the module
-transmutation directly and then achieve transformation of lead into gold.
-• ft_transmutation_2.py will use the import ... structure to import the module
-alchemy directly and then achieve transformation of lead into gold.
+• A function light_spell_allowed_ingredients() that returns a list of allowed
+ingredients for light magic, let’s say “earth”, “air”, “fire”, “water”.
 
-You may need to create and/or update a few extra files to complete these scripts.
+• A function light_spell_record(spell_name: str, ingredients: str) that re turns a string that indicates whether the spell is recorded or rejected. The decision comes from the validation function described below.
+
+----------------------------------------------------
+alchemy/grimoire/light_validator.py will contain:
+
+• A function validate_ingredients(ingredients: str) that returns a string with the ingredients and the “VALID” or “INVALID” keyword. The ingredients are valid if they include at least one of the allowed ingredients from the spellbook (case insensitive).
+-----------------------------------------------------
+Now duplicate both files to obtain dark_spellbook.py and dark_validator.py, and
+change the function names as well. Let’s say that dark magic uses the following ingredients: “bats”, “frogs”, “arsenic”, and “eyeball”.
+-------------------------------------------------
+Create two scripts to demonstrate that light magic avoids circular dependencies and laboratory explosions, and that dark magic is dangerous and explodes because of circular dependencies:
+
+• ft_kaboom_0.py will access the grimoire module directly and then record a light
+spell, flawlessly. There are multiple ways to avoid circular dependencies; you pick
+one. Be prepared to explain the different approaches during the evaluation.
+
+• ft_kaboom_1.py will secretly access the dark_spellbook.py directly and then try
+to record a dark spell. This must fail and raise an exception (you can choose to
+catch it or not; it’s only for pedagogical purposes), indicating that your alchemist
+laboratory has just exploded.
 
 ######
 Exercice
