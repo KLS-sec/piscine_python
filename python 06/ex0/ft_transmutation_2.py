@@ -1,4 +1,5 @@
 import alchemy
 
-print(f"Import transmutation module directly\n Testing lead to gold: "
-      f"{alchemy.lead_to_gold()}")
+print("=== Transmutation 2 ===")
+print("Import transmutation module directly")
+print(f"Testing lead to gold: {alchemy.lead_to_gold()}")
