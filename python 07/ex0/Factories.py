@@ -7,20 +7,20 @@ class Creature(ABC):
         self._type: str = type
 
     @abstractmethod
-    def attack(self):
+    def attack(self) -> str:
         pass
 
-    def describe(self):
+    def describe(self) -> str:
         return (f"{self._name} is a {self._type} type creature")
 
 
 class CreatureFactory(ABC):
     @abstractmethod
-    def create_base() -> Creature:
+    def create_base(self) -> Creature:
         pass
 
     @abstractmethod
-    def create_evolved() -> Creature:
+    def create_evolved(self) -> Creature:
         pass
 
 ####################
