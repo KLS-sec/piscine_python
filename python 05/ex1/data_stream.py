@@ -128,7 +128,6 @@ class DataStream():
         if not stream:
             print("Error, empty list.")
             return
-##################################################
         for processor in self._processor_list:
             list_processing: list[typing.Any] = []
             for data in stream:

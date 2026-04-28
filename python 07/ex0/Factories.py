@@ -26,31 +26,6 @@ class CreatureFactory(ABC):
 ####################
 
 
-class FlameFactory(CreatureFactory):
-    def create_base(self) -> Creature:
-        return Flameling()
-
-    def create_evolved(self) -> Creature:
-        return Pyrodon()
-
-
-class AquaFactory(CreatureFactory):
-    def create_base(self) -> Creature:
-        return Aquabub()
-
-    def create_evolved(self) -> Creature:
-        return Torragon()
-
-
-"""
-concrete classes:
-    -inherit from CreatureFactory
-    -FlameFactory, AquaFactory
-    -handle the creation of base and evolved creatures
-"""
-####################
-
-
 class Flameling(Creature):
     def __init__(self) -> None:
         super().__init__("Flameling", "Fire")
@@ -88,4 +63,31 @@ builtins, standard types, import typing, import abc
 
 abstract class CreatureFactory
     -create_base and create_evolved abstract method
+"""
+
+
+####################
+
+
+class FlameFactory(CreatureFactory):
+    def create_base(self) -> Creature:
+        return Flameling()
+
+    def create_evolved(self) -> Creature:
+        return Pyrodon()
+
+
+class AquaFactory(CreatureFactory):
+    def create_base(self) -> Creature:
+        return Aquabub()
+
+    def create_evolved(self) -> Creature:
+        return Torragon()
+
+
+"""
+concrete classes:
+    -inherit from CreatureFactory
+    -FlameFactory, AquaFactory
+    -handle the creation of base and evolved creatures
 """
