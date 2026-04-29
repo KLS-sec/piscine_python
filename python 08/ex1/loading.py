@@ -48,6 +48,7 @@ loading.py
     create 2 regulating files
         pip
             use this codeline: pip freeze > requirements.txt
+            to use to reinstall a setup: pip install -r requirements.txt
         poetry
             pyproject.toml
 
@@ -97,7 +98,8 @@ methods (int, str, list, dict, etc.).
 • Test your programs in different environments (with/without virtual
 env, with/without dependencies).
 """
-"""# ex1/loading.py
+"""
+# ex1/loading.py
 
 from __future__ import annotations
 
