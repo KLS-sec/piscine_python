@@ -2,19 +2,26 @@ import sys
 import os
 
 if sys.prefix != sys.base_prefix:
-    print("IN")
-    print("")
+    print("\nMATRIX STATUS: Welcome to the construct")
+    print("\nCurrent Python:", sys.executable)
+    print("Virtual Environment:", os.path.basename(sys.prefix))
+    print("Environment Path:", sys.prefix)
+    print("\nSUCCESS: You're in an isolated environment!\nSafe to install"
+          " packages without affecting\nthe global system.")
+    print("\nPackage installation path:")
     print(sys.path)
-    print("")
-    print(os.getcwd())
 
 else:
-    print("OUT")
-    print("")
-    print(sys.path)
-    print("")
-    print(os.getcwd())
-
+    print("\nMATRIX STATUS:  You're still plugged in")
+    print("\nCurrent Python:", sys.executable)
+    print("Virtual Environment: None detected")
+    print("\nWARNING: You're in the global environment!\n"
+          "The machines can see everything you install.")
+    print("\nTo enter the construct, run:\n"
+          "python3 -m virtualenv myfirstproject\n"
+          "source myfirstproject/bin/activate # On Unix\n"
+          "matrix_env\\Scripts\\activate # On Windows\n")
+    print("Then run this program again.")
 
 """
 4 réorganiser les instructions de façon claire et compréhensible avec une
@@ -41,7 +48,7 @@ https://stackoverflow.com/questions/1871549/how-to-determine-if-python-is-runnin
 
 [IMPORTANT]
 python3 -m pip install virtualenv
-    installation des packages
+    installation des packages permetant de faire du venv
 python3 -m virtualenv myfirstproject
     creation de l environnement
 source myfirstproject/bin/activate
@@ -53,16 +60,18 @@ tout pareil a partir de la, juste virtualenv au lieu de venv
 [authorized functions]
 sys, os, site modules, print()
 
-[exercise instructions - to reorganize]
+TODO[exercise instructions - to reorganize]
 
 construct.py
     detect if it is running inside a virtual env
-        sys.prefix != sys.base_prefix
-    show informations about the python environment
-        -see example
+        -sys.prefix != sys.base_prefix
+        -if NOT in venv
+            -give explanation about how to open it
+    show informations about the python environment, SEE EXEMPLES
         -adress of curently used python
         -if in venv: venv path
         -if in venv: package instalation path
+    Must work in and out venv
 
 
 Create a program called construct.py that:
@@ -92,5 +101,4 @@ methods (int, str, list, dict, etc.).
 • All built-in functions are authorized.
 • Test your programs in different environments (with/without virtual
 env, with/without dependencies).
-
 """
