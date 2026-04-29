@@ -18,8 +18,8 @@ else:
     print("\nWARNING: You're in the global environment!\n"
           "The machines can see everything you install.")
     print("\nTo enter the construct, run:\n"
-          "python3 -m virtualenv myfirstproject\n"
-          "source myfirstproject/bin/activate # On Unix\n"
+          "python3 -m virtualenv matrix_env\n"
+          "source matrix_env/bin/activate # On Unix\n"
           "matrix_env\\Scripts\\activate # On Windows\n")
     print("Then run this program again.")
 
