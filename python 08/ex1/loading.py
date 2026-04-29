@@ -1,3 +1,9 @@
+refaire le work instruction morceau par morcea
+verifier comment call chaques ellements et les utiliser
+voir ce que je suis suppose faire comme appel de data
+comme transformation de data
+comme graphique final
+
 """Exercice
 1 lire l exercice, lister les choses à apprendre
 2 remplir le work instructions
