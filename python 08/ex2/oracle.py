@@ -1,7 +1,16 @@
+from dotenv import load_dotenv
+load_dotenv()
+
+def main() -> None:
+
+    # needed to get inside .env
+    mode = os.getenv("MATRIX_MODE")
+    if mode == "production":
+        print("ok")
+
+
 """
 Exercice
-1 lire l exercice, lister les choses à apprendre
-2 remplir le work instructions
 3 Lire le w3school/autre concerne
 4 réorganiser les instructions de façon claire et compréhensible avec une
 checklist des éléments importants
@@ -49,9 +58,11 @@ oracle.py
         • ZION_ENDPOINT - URL for the resistance network
 
 keep .env in gitignore, except a copy as .env.exemple
-
+    from dotenv import load_dotenv
+    load_dotenv()
 
 .env need python-dotenv (pip install python-dotenv)
+    need to be installed <pip install python-dotenv>
     <from dotenv import load_dotenv> to import into the code
 
 
