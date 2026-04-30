@@ -1,12 +1,20 @@
 from dotenv import load_dotenv
+import os
 load_dotenv()
 
 def main() -> None:
 
     # needed to get inside .env
     mode = os.getenv("MATRIX_MODE")
-    if mode == "production":
+    print(f"MODE={mode}")
+    if mode == "development":
         print("ok")
+    else:
+        print("dead")
+
+
+if __name__ == "__main__":
+    main()
 
 
 """
@@ -27,6 +35,7 @@ Si bloqué:
 G [tutorials]
 python-dotenv modules
 gitignore
+https://pypi.org/project/python-dotenv/
 .env file
 
 [authorized functions]
