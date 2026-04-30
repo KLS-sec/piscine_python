@@ -48,14 +48,13 @@ https://stackoverflow.com/questions/1871549/how-to-determine-if-python-is-runnin
 
 [IMPORTANT]
 python3 -m pip install virtualenv
-    installation des packages permetant de faire du venv
+    install the packages needed
 python3 -m virtualenv myfirstproject
-    creation de l environnement
+    create the environment
 source myfirstproject/bin/activate
-    activer
+    activation
 deactivate
-    desactiver
-tout pareil a partir de la, juste virtualenv au lieu de venv
+    desactivate it
 
 [authorized functions]
 sys, os, site modules, print()

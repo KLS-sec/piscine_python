@@ -1,10 +1,46 @@
-refaire le work instruction morceau par morcea
-verifier comment call chaques ellements et les utiliser
-voir ce que je suis suppose faire comme appel de data
-comme transformation de data
-comme graphique final
+import importlib
+from importlib.metadata import version
 
-"""Exercice
+
+def main() -> None:
+    try:
+        np = importlib.import_module("numpy")
+        pd = importlib.import_module("pandas")
+        mpl = importlib.import_module("matplotlib.pyplot")
+    except Exception as err:
+        print(f"Error, missing dependencie: {err}")
+        print("Use <pip install -r requirements.txt> in the venv to"
+              " instal dependencies # pip")
+        return
+
+    print("\nLOADING STATUS: Loading programs...\n")
+
+    print("Checking dependencies:")
+    p = version("pandas")
+    q = version("numpy")
+    r = version("matplotlib")
+    print(f"[OK] {p} - Data manipulation ready")
+    print(f"[OK] {q} - Numerical computation ready")
+    print(f"[OK] {r} - Visualization ready")
+
+    print("\nAnalyzing Matrix data...")
+    array = np.random.normal(size=1000)
+    print("Processing 1000 data points...")
+    df = pd.DataFrame(array, columns=["values"])
+    print("Generating visualization...")
+    mpl.hist(df["values"], bins=30)
+    mpl.title("Matrix Data Distribution")
+    mpl.savefig("matrix_analysis.png")
+
+    print("Analysis complete!")
+    print("Results saved to: matrix_analysis.png")
+
+
+if __name__ == "__main__":
+    main()
+
+"""
+Exercice
 1 lire l exercice, lister les choses à apprendre
 2 remplir le work instructions
 3 Lire le w3school/autre concerne
@@ -21,20 +57,11 @@ si bloqué
 G [tutorials]
 https://www.w3schools.com/python/pandas/pandas_intro.asp#:~:text=What%20is%20Pandas%3F,by%20Wes%20McKinney%20in%202008.
 https://www.w3schools.com/python/numpy/numpy_intro.asp
-python pandas
-python numpy
+https://www.w3schools.com/python/matplotlib_intro.asp
+https://python-poetry.org/docs/basic-usage/
+
 
 [authorized functions / files to submit]
-
-
-
-
--ARRÊTE DE TE PRENDRE LA TETE, C EST SIMPLE
-
-
-
-
-
 pandas, requests, matplotlib, numpy, sys, importlib
 loading.py, requirements.txt, pyproject.toml
 
@@ -45,18 +72,25 @@ V    install numpy, pandas, matpotlib
 
 loading.py
     use pandas, numpy, matplotlib, poetry, pip
-        numpy to generate data
+        numpy
+            generate 1000 data points
         panda organise the data and add metadata (no need to learn more now)
+            ???
         matplotlib to generate a graph with the data
+            creer une bete courbe
 
         redo this part of the instructions
 
-    create 2 regulating files
-        pip
-            use this codeline: pip freeze > requirements.txt
-            to use to reinstall a setup: pip install -r requirements.txt
-        poetry
-            pyproject.toml
+create 2 regulating files
+    pip
+        ****use this codeline: pip freeze > requirements.txt
+        ****to use to reinstall a setup: pip install -r requirements.txt
+    poetry
+        pyproject.toml
+
+autre:
+    voir importlib
+    voir exemples pour details en plus
 
 end:
     will nedd to show the use of pip and poetry (what is poetry?)
@@ -103,124 +137,11 @@ methods (int, str, list, dict, etc.).
 • All built-in functions are authorized.
 • Test your programs in different environments (with/without virtual
 env, with/without dependencies).
-"""
-"""
-# ex1/loading.py
 
-from __future__ import annotations
-
-import sys
-import os
-import importlib
-from typing import Any
-
-
-def safe_import(module_name: str) -> Any | None:
-    try:
-        return importlib.import_module(module_name)
-    except ImportError:
-        return None
-
-
-def get_version(pkg: str) -> str:
-    try:
-        from importlib.metadata import version
-        return version(pkg)
-    except Exception:
-        return "unknown"
-
-
-def check_dependencies() -> dict[str, Any]:
-    deps = {
-        "numpy": safe_import("numpy"),
-        "pandas": safe_import("pandas"),
-        "matplotlib": safe_import("matplotlib"),
-    }
-
-    # optional dependency
-    deps["requests"] = safe_import("requests")
-
-    return deps
-
-
-def print_dependency_status(deps: dict[str, Any]) -> bool:
-    print("LOADING STATUS: Loading programs...")
-    print("Checking dependencies:")
-
-    required = ["numpy", "pandas", "matplotlib"]
-    ok = True
-
-    for name in required:
-        if deps[name] is None:
-            print(f"[ERROR] {name} not installed")
-            print(f"Install with: pip install {name} OR poetry add {name}")
-            ok = False
-        else:
-            print(f"[OK] {name} ({get_version(name)}) - ready")
-
-    if deps["requests"] is not None:
-        print(f"[OK] requests ({get_version('requests')}) - optional API"
-               " access ready")
-
-    return ok
-
-
-def generate_data(np: Any) -> Any:
-    return np.random.normal(size=1000)
-
-
-def process_data(pd: Any, data: Any) -> Any:
-    df = pd.DataFrame(data, columns=["values"])
-    df["normalized"] = (df["values"] - df["values"].mean()) / df["values"].std()
-    return df
-
-
-def visualize_data(plt: Any, df: Any) -> None:
-    plt.hist(df["values"], bins=30)
-    plt.title("Matrix Data Distribution")
-    plt.savefig("matrix_analysis.png")
-
-
-def show_environment_info() -> None:
-    print("\nEnvironment info:")
-    print(f"Python executable: {sys.executable}")
-    print(f"Virtual env: {os.environ.get('VIRTUAL_ENV', 'None')}")
-
-
-def show_package_manager_note() -> None:
-    print("\nPackage management comparison:")
-    print("- pip: installs from requirements.txt into environment")
-    print("- poetry: manages env + dependencies via pyproject.toml")
-
-
-def main() -> None:
-    deps = check_dependencies()
-
-    show_environment_info()
-    show_package_manager_note()
-
-    if not (deps["numpy"] and deps["pandas"] and deps["matplotlib"]):
-        print("\nMissing dependencies. Aborting analysis.")
-        return
-
-    np = deps["numpy"]
-    pd = deps["pandas"]
-    plt = deps["matplotlib"].pyplot
-
-    print("\nAnalyzing Matrix data...")
-    data = generate_data(np)
-
-    print("Processing 1000 data points...")
-    df = process_data(pd, data)
-
-    print("Generating visualization...")
-    visualize_data(plt, df)
-
-    print("\nAnalysis complete!")
-    print("Results saved to: matrix_analysis.png")
-
-
-if __name__ == "__main__":
-    main()
-
+################################################################
+################################################################
+################################################################
+################################################################
+################################################################
+################################################################
 """
