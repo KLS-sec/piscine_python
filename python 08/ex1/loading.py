@@ -84,8 +84,10 @@ loading.py
 
 create 2 regulating files
     pip
-        ****use this codeline: pip freeze > requirements.txt
-        ****to use to reinstall a setup: pip install -r requirements.txt
+        ****use this codeline:
+            pip freeze > requirements.txt
+        ****to use to reinstall a setup in the existing venv
+            pip install -r requirements.txt
     poetry
         pyproject.toml
 

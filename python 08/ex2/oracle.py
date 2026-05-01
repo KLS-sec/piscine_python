@@ -1,16 +1,39 @@
-from dotenv import load_dotenv
+from dotenv import dotenv_values
 import os
-load_dotenv()
+
 
 def main() -> None:
-
     # needed to get inside .env
-    mode = os.getenv("MATRIX_MODE")
-    print(f"MODE={mode}")
-    if mode == "development":
-        print("ok")
+    env_file: dict[str, str | None] = dotenv_values(".env")
+
+    if (mode := os.getenv("MATRIX_MODE")) is None:
+        mode = env_file.get("MATRIX_MODE")
+
+    if mode == "production":
+        print("Warning, production mode.\nEnd of program")
+        return
+    elif mode == "development":
+
+        expected_key = env_file.get("API_KEY")
+        user_key = os.environ.get("API_KEY")
+
+        if user_key is None:
+            print("No key provided, access denied.")
+            return
+
+        if user_key != expected_key:
+            print("Wrong key, access denied.")
+            return
+
+        print("ORACLE STATUS: Reading the Matrix...")
+        print("\nConfiguration loaded:")
+        print(f"Mode: {mode}")
+        print("Database: Connected to local instance")
+        print("API Access: Authenticated")
+        print("Log Level: DEBUG")
+        print(f"Zion Network: {env_file.get('ZION_ENDPOINT')}")
     else:
-        print("dead")
+        print("Warning, invalid mode\nEnd of program")
 
 
 if __name__ == "__main__":
