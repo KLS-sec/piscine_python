@@ -9,7 +9,7 @@ def main() -> None:
         mpl = importlib.import_module("matplotlib.pyplot")
     except Exception as err:
         print(f"Error, missing dependencie: {err}")
-        print("Use <pip install -r requirements.txt> in the venv to"
+        print("pip:\nUse <pip install -r requirements.txt> in the venv to"
               " instal dependencies # pip")
         return
 
@@ -59,6 +59,7 @@ https://www.w3schools.com/python/pandas/pandas_intro.asp#:~:text=What%20is%20Pan
 https://www.w3schools.com/python/numpy/numpy_intro.asp
 https://www.w3schools.com/python/matplotlib_intro.asp
 https://python-poetry.org/docs/basic-usage/
+https://pypi.org/project/poetry/
 
 
 [authorized functions / files to submit]
@@ -95,6 +96,16 @@ autre:
 end:
     will nedd to show the use of pip and poetry (what is poetry?)
 
+    poetry
+        create m.toml
+        creer .toml
+            python3 -m poetry init --no-interaction
+        fill .toml
+            python3 -m poetry add "numpy<2.0" matplotlib "pandas<3.0"
+        intall the env
+            python3 -m poetry install --no-root
+        use the loading.py without opening the venv
+            python3 -m poetry run python loading.py
 TODO
 [exercise instructions - to reorganize]
 Create a data analysis program called loading.py that:

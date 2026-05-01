@@ -1,16 +1,18 @@
-[tool.poetry]
-name = "myfirstproject"
+[project]
+name = "ex1"
 version = "0.1.0"
 description = ""
-authors = ["you"]
-
-[tool.poetry.dependencies]
-python = "^3.10"
-numpy = "*"
-pandas = "*"
-matplotlib = "*"
+authors = [
+    {name = "kle-scor",email = "lescornetkevin@gmail.com"}
+]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy (<2.0)",
+    "matplotlib (>=3.10.9,<4.0.0)",
+    "pandas (<3.0)"
+]
 
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
