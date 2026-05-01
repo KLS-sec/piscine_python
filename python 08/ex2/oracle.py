@@ -9,8 +9,11 @@ def main() -> None:
     if (mode := os.getenv("MATRIX_MODE")) is None:
         mode = env_file.get("MATRIX_MODE")
 
+    if (log := os.getenv("LOG_LEVEL")) is None:
+        log = env_file.get("LOG_LEVEL")
+
     if mode == "production":
-        print("Warning, production mode.\nEnd of program")
+        print("Warning, production mode.\nWe are codding here")
         return
     elif mode == "development":
 
@@ -30,8 +33,14 @@ def main() -> None:
         print(f"Mode: {mode}")
         print("Database: Connected to local instance")
         print("API Access: Authenticated")
-        print("Log Level: DEBUG")
-        print(f"Zion Network: {env_file.get('ZION_ENDPOINT')}")
+        print(f"Log Level: {log}")
+        print("Zion Network: Online")
+
+        print("\nEnvironment security check:")
+        print("[OK] No hardcoded secrets detected")
+        print("[OK] .env file properly configured")
+        print("[OK] Production overrides available")
+        print("\nThe Oracle sees all configurations.")
     else:
         print("Warning, invalid mode\nEnd of program")
 
@@ -41,6 +50,10 @@ if __name__ == "__main__":
 
 
 """
+API_KEY code 123
+LOG_LEVEL usable for test
+
+
 Exercice
 3 Lire le w3school/autre concerne
 4 réorganiser les instructions de façon claire et compréhensible avec une

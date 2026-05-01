@@ -40,6 +40,23 @@ if __name__ == "__main__":
     main()
 
 """
+pip setup:
+    pip freeze > requirements.txt
+to use to reinstall a setup in the existing venv
+    pip install -r requirements.txt
+
+poetry setup:
+    create .toml
+        python3 -m poetry init --no-interaction
+    fill .toml
+        python3 -m poetry add "numpy<2.0" matplotlib "pandas<3.0"
+    use .toml to create pseudo venv
+        python3 -m poetry install --no-root
+    use .loading
+        python3 -m poetry run python loading.py
+
+
+
 Exercice
 1 lire l exercice, lister les choses à apprendre
 2 remplir le work instructions
@@ -84,7 +101,7 @@ loading.py
 
 create 2 regulating files
     pip
-        ****use this codeline:
+        ****use this codeline to generate pip setup:
             pip freeze > requirements.txt
         ****to use to reinstall a setup in the existing venv
             pip install -r requirements.txt
@@ -99,14 +116,13 @@ end:
     will nedd to show the use of pip and poetry (what is poetry?)
 
     poetry
-        create m.toml
-        creer .toml
+        create .toml
             python3 -m poetry init --no-interaction
         fill .toml
             python3 -m poetry add "numpy<2.0" matplotlib "pandas<3.0"
         intall the env
             python3 -m poetry install --no-root
-        use the loading.py without opening the venv
+        use it
             python3 -m poetry run python loading.py
 TODO
 [exercise instructions - to reorganize]
