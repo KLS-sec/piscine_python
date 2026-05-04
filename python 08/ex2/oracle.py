@@ -1,10 +1,16 @@
-from dotenv import dotenv_values
 import os
+import importlib
 
 
 def main() -> None:
+    try:
+        dotenv = importlib.import_module("dotenv")
+    except Exception as err:
+        print(f"Error, missing dependencie: {err}")
+        return
+
     # needed to get inside .env
-    env_file: dict[str, str | None] = dotenv_values(".env")
+    env_file: dict[str, str | None] = dotenv.dotenv_values(".env")
 
     if (mode := os.getenv("MATRIX_MODE")) is None:
         mode = env_file.get("MATRIX_MODE")
@@ -28,7 +34,7 @@ def main() -> None:
             print("Wrong key, access denied.")
             return
 
-        print("ORACLE STATUS: Reading the Matrix...")
+        print("\nORACLE STATUS: Reading the Matrix...")
         print("\nConfiguration loaded:")
         print(f"Mode: {mode}")
         print("Database: Connected to local instance")
@@ -52,7 +58,7 @@ if __name__ == "__main__":
 """
 API_KEY code 123
 LOG_LEVEL usable for test
-
+MODE developpement/production decide if it starts or not
 
 Exercice
 3 Lire le w3school/autre concerne
@@ -73,6 +79,8 @@ python-dotenv modules
 gitignore
 https://pypi.org/project/python-dotenv/
 .env file
+https://www.w3schools.com/python/python_virtualenv.asp
+
 
 [authorized functions]
 os, sys, python-dotenv modules, file operations
