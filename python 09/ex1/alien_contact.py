@@ -1,35 +1,88 @@
 # !/usr/bin/env python3
-from pydantic import BaseModel, Field, ValidationError
+
+from pydantic import BaseModel, Field, model_validator, ValidationError
 from enum import Enum
+from datetime import datetime
 
 
-class Season(Enum):
-    SPRING = 1
-    SUMMER = 2
-    AUTUMN = 3
-    WINTER = 4
+class ContactType(Enum):
+    radio = "radio"
+    visual = "visual"
+    physical = "physical"
+    telepathic = "telepathic"
 
 
-class SpaceStation(BaseModel):
-    station_id: str = Field(min_length=3, max_length=10)
-    name: str = Field(min_length=1, max_length=50)
-    crew_size: int = Field(ge=1, le=20)
-    power_level: float = Field(ge=0.0, le=100.0)
-    oxygen_level: float = Field(ge=0.0, le=100.0)
-    last_maintenance: datetime
-    is_operational: bool = True
-    notes: str | None = Field(default=None, max_length=200)
+class AlienContact(BaseModel):
+    contact_id: str = Field(min_length=5, max_length=15)
+    timestamp: datetime
+    location: str = Field(min_length=3, max_length=100)
+    contact_type: ContactType
+    signal_strength: float = Field(ge=0.0, le=10.0)
+    duration_minutes: int = Field(ge=1, le=1440)
+    witness_count: int = Field(ge=1, le=100)
+    message_received: str | None = Field(default=None, max_length=500)
+    is_verified: bool = False
 
-    @classmethod
-    def cast_ints(cls, value: Any) -> Any:
-        if isinstance(value, int):
-            return str(value)
-        else:
-            return value
+    @model_validator(mode='after')
+    def checker(self) -> "AlienContact":
+        if not self.contact_id.startswith("AC"):
+            raise ValueError("Contact ID must start with 'AC'")
+        if not self.is_verified and self.contact_type == ContactType.physical:
+            raise ValueError("Physical contact must be verified")
+        if (self.witness_count < 3 and
+           self.contact_type == ContactType.telepathic):
+            raise ValueError("Telepathic contact "
+                             "requires at least 3 witnesses")
+        if self.signal_strength > 7 and not self.message_received:
+            raise ValueError("Strong signals must include a message")
+
+        return self
 
 
 def main() -> None:
-    pass
+    Normandy = AlienContact(
+            contact_id="AC_2024_001",
+            timestamp=datetime.fromisoformat("2026-05-01T12:"
+                                             "00:00+00:00"),
+            location="Area 51, Nevada",
+            contact_type=ContactType.radio,
+            signal_strength=8.5,
+            duration_minutes=45,
+            witness_count=5,
+            message_received="Greetings from Zeta Reticuli",
+            is_verified=True)
+
+    print("Alien Contact Log Validation")
+    print("======================================")
+    print("Valid contact report:")
+    print(f"ID: {Normandy.contact_id}")
+    print(f"Type: {Normandy.contact_type}")
+    print(f"Location: {Normandy.location}")
+    print(f"Signal: {Normandy.signal_strength}/10")
+    print(f"Duration: {Normandy.duration_minutes} minutes")
+    print(f"Witnesses: {Normandy.witness_count}")
+    print(f"Message: '{Normandy.message_received}'")
+
+    print("\n======================================")
+    print("Expected validation error:")
+    try:
+        Boom = AlienContact(
+                contact_id="AC_2024_001",
+                timestamp=datetime.fromisoformat("2026-05-01T12:"
+                                                 "00:00+00:00"),
+                location="Area 51, Nevada",
+                contact_type=ContactType.telepathic,
+                signal_strength=8.5,
+                duration_minutes=45,
+                witness_count=2,
+                message_received="'Greetings from Zeta Reticuli'",
+                is_verified=True)
+    except ValidationError as err:
+        e = err.errors()[0]["msg"]
+        print(e)
+        return
+
+    Boom = Boom
 
 
 if __name__ == "__main__":
@@ -37,19 +90,6 @@ if __name__ == "__main__":
 
 
 """
-Exercice
-4 réorganiser les instructions de façon claire et compréhensible avec une
-checklist des éléments importants
-X si exo long organiser la liste des choses a faire (objectif clair + feedback)
-X regarder liste pauses
-
-Si bloqué:
--Voir exemples
--réexpliquer par GPT
--arrêter de se casser le crâne à voir plus compliqué
--faire morceau par morceau et implémenter
----------------------------------------------
-Work instruction
 
 G [tutorials]
 Pydantic
@@ -73,7 +113,7 @@ None
 goal:
 use @model_validator
 
-
+XXX
 Enum: (voir exemples)
     -Define contact type
         -radio
@@ -92,45 +132,10 @@ AlienContact: Pydantic model (BaseModel)
     • message_received: Optional string, max 500 characters
     • is_verified: Boolean, defaults to False
 
-Cunstom Validation rules
+Custom Validation rules
     -@model_validator(mode=’after’)
         • Contact ID must start with "AC" (Alien Contact)
         • Physical contact reports must be verified
         • Telepathic contact requires at least 3 witnesses
         • Strong signals (> 7.0) should include received messages
-
-
-----------------------------------------------------------------------------
-[exercise instructions - original]
-----------------------------------------------------------------------------
-G [general project instructions]
-• Your project must be written in Python 3.10 or later.
-• Your project must adhere to the flake8 coding standard.
-• All code must include comprehensive type annotations. Check this using mypy.
-• Exception handling should protect the data streams from corruption.
-• All standard classes and collections are authorized, along with their
-methods (int, str, list, dict, etc.).
-• All built-in functions are authorized. • Use pip as package manager
-• You must use Virtual environments (recommended: venv, virtualenv, or conda)
-• You must use which Pydantic 2.x for every exercise. (It must be installed
-via pip). Only other modules will be listed in each exercise’s Allowed section
-
-- Authorized imports: You may import JSON and CSV data from the tools
-directory. Standard library modules (json, csv, datetime, etc.) are allowed.
-
-- Important: This activity focuses on Pydantic v2 syntax. Avoid deprecated
-decorators like @validator - use @model_validator for custom validation
-instead.
-
-
--BaseModel
-The foundation of all Pydantic models. Inherit from BaseModel to create
-validated data classes.
--Field
-Use Field(...) to add validation constraints, descriptions, and default values
-to model attributes.
--model_validator
-Use the @model_validator(mode=’after’) decorator for custom validation logic
-that runs after Pydantic’s built-in validation. This replaces the deprecated
-@validator decorator from Pydantic v1.
 """

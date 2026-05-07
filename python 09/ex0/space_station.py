@@ -38,7 +38,8 @@ def main() -> None:
                   crew_size=6,
                   power_level=85.5,
                   oxygen_level=92.3,
-                  last_maintenance="2026-05-01T12:00:00Z",  # Z for UTC time
+                  last_maintenance=datetime.fromisoformat("2026-05-01T12:"
+                                                          "00:00+00:00"),
                   is_operational=True)
 
     if StationOne.is_operational:
@@ -63,7 +64,8 @@ def main() -> None:
                     crew_size=66,
                     power_level=85.5,
                     oxygen_level=92.3,
-                    last_maintenance="2026-05-01T12:00:00Z",  # Z for UTC time
+                    last_maintenance=datetime.fromisoformat("2026-05-01T12:"
+                                                            "00:00+00:00"),
                     is_operational=True)
     except ValidationError as err:
         e = err.errors()[0]["msg"]
