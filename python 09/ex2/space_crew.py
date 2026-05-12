@@ -38,31 +38,130 @@ class SpaceMission(BaseModel):
         if not self.mission_id.startswith("M"):
             raise ValueError("Missiom ID must start with 'M'")
 
-        for x in SpaceMission.crew:
+        for x in self.crew:
             if not x.is_active:
                 raise ValueError("Mission list an innactive crew member")
 
         y = 0
-        for x in SpaceMission.crew:
-            if x == "Commander" or x == "Captain":
+        for x in self.crew:
+            if x.rank in (CrewRanks.commander, CrewRanks.captain):
                 y += 1
         if y == 0:
             raise ValueError("Mission must have at least one Commander or"
                              " Captain")
 
-        if SpaceMission.duration_days > 365:
+        if self.duration_days > 365:
             z = 0
-            for x in SpaceMission.crew:
+            for x in self.crew:
                 if x.years_experience >= 5:
                     z += 1
-            if not z < len(SpaceMission.crew):
-                raise ValueError("Mission must have mor experienced members")
+            if z < len(self.crew) / 2:
+                raise ValueError("Mission must have more experienced members")
 
         return self
 
 
 def main() -> None:
-    pass
+    print("Space Mission Crew Validation")
+    print("=========================================")
+    print("Valid mission created:")
+
+    shepard = CrewMember(
+            member_id="123",
+            name="Shepard",
+            age=30,
+            specialization="Specter",
+            rank=CrewRanks.commander,
+            years_experience=10,
+            is_active=True)
+
+    joker = CrewMember(
+            member_id="124",
+            name="Joker",
+            age=30,
+            specialization="Pilot",
+            rank=CrewRanks.lieutenant,
+            years_experience=10,
+            is_active=True)
+
+    edi = CrewMember(
+            member_id="125",
+            name="EDI",
+            age=30,
+            specialization="Onboard AI",
+            rank=CrewRanks.cadet,
+            years_experience=1,
+            is_active=True)
+
+    cerberus_agents: list[CrewMember] = [shepard, joker, edi]
+
+    normandy = SpaceMission(
+        mission_id="M2024_MARS",
+        mission_name="Mars Colony Establishment",
+        destination="Mars",
+        launch_date=datetime.fromisoformat("2026-05-01T12:00:00+00:00"),
+        duration_days=900,
+        budget_millions=2500.0,
+        mission_status="Ongoing",
+        crew=cerberus_agents
+    )
+    print(f"Mission: {normandy.mission_name}")
+    print(f"ID: {normandy.mission_id}")
+    print(f"Destination: {normandy.destination}")
+    print(f"Duration: {normandy.duration_days}")
+    print(f"Budget: {normandy.budget_millions}")
+    print(f"Crew size: {len(normandy.crew)}")
+    print("Crew members:")
+    for agent in normandy.crew:
+        print(f"- {agent.name} ({agent.rank.value}) - {agent.specialization}")
+
+    print("\n=========================================")
+    print("Expected validation error:")
+    sherpardd = CrewMember(
+            member_id="123",
+            name="Shepard",
+            age=30,
+            specialization="Specter",
+            rank=CrewRanks.commander,
+            years_experience=10,
+            is_active=True)
+
+    jokerr = CrewMember(
+            member_id="124",
+            name="Joker",
+            age=30,
+            specialization="Pilot",
+            rank=CrewRanks.lieutenant,
+            years_experience=1,
+            is_active=True)
+
+    edii = CrewMember(
+            member_id="125",
+            name="EDI",
+            age=30,
+            specialization="Onboard AI",
+            rank=CrewRanks.cadet,
+            years_experience=1,
+            is_active=True)
+
+    cerberus_agentss: list[CrewMember] = [sherpardd, jokerr, edii]
+
+    try:
+        normandyy = SpaceMission(
+            mission_id="M2024_MARS",
+            mission_name="Mars Colony Establishment",
+            destination="Mars",
+            launch_date=datetime.fromisoformat("2026-05-01T12:00:00+00:00"),
+            duration_days=900,
+            budget_millions=2500.0,
+            mission_status="Ongoing",
+            crew=cerberus_agentss
+        )
+    except ValidationError as err:
+        e = err.errors()[0]["msg"]
+        print(e)
+        return
+    normandyy = normandyy
 
 
 if __name__ == "__main__":
@@ -154,7 +253,8 @@ G [general project instructions]
 • Exception handling should protect the data streams from corruption.
 • All standard classes and collections are authorized, along with their
   methods (int, str, list, dict, etc.).
-• All built-in functions are authorized. • Use pip as package manager
+• All built-in functions are authorized.
+• Use pip as package manager
 • You must use Virtual environments (recommended: venv, virtualenv, or conda)
 • You must use which Pydantic 2.x for every exercise. (It must be installed
   via pip). Only other modules will be listed in each exercise’s Allowed

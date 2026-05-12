@@ -40,7 +40,7 @@ class AlienContact(BaseModel):
 
 
 def main() -> None:
-    Normandy = AlienContact(
+    normandy = AlienContact(
             contact_id="AC_2024_001",
             timestamp=datetime.fromisoformat("2026-05-01T12:"
                                              "00:00+00:00"),
@@ -55,18 +55,18 @@ def main() -> None:
     print("Alien Contact Log Validation")
     print("======================================")
     print("Valid contact report:")
-    print(f"ID: {Normandy.contact_id}")
-    print(f"Type: {Normandy.contact_type}")
-    print(f"Location: {Normandy.location}")
-    print(f"Signal: {Normandy.signal_strength}/10")
-    print(f"Duration: {Normandy.duration_minutes} minutes")
-    print(f"Witnesses: {Normandy.witness_count}")
-    print(f"Message: '{Normandy.message_received}'")
+    print(f"ID: {normandy.contact_id}")
+    print(f"Type: {normandy.contact_type.value}")
+    print(f"Location: {normandy.location}")
+    print(f"Signal: {normandy.signal_strength}/10")
+    print(f"Duration: {normandy.duration_minutes} minutes")
+    print(f"Witnesses: {normandy.witness_count}")
+    print(f"Message: '{normandy.message_received}'")
 
     print("\n======================================")
     print("Expected validation error:")
     try:
-        Boom = AlienContact(
+        boom = AlienContact(
                 contact_id="AC_2024_001",
                 timestamp=datetime.fromisoformat("2026-05-01T12:"
                                                  "00:00+00:00"),
@@ -82,7 +82,7 @@ def main() -> None:
         print(e)
         return
 
-    Boom = Boom
+    boom = boom
 
 
 if __name__ == "__main__":

@@ -15,24 +15,11 @@ class SpaceStation(BaseModel):
     notes: str | None = Field(default=None, max_length=200)
 
 
-"""
-Create a Pydantic model with these validated fields:
-    • station_id: String, 3-10 characters
-    • name: String, 1-50 characters
-    • crew_size: Integer, 1-20 people
-    • power_level: Float, 0.0-100.0 percent
-    • oxygen_level: Float, 0.0-100.0 percent
-    • last_maintenance: DateTime field
-    • is_operational: Boolean, defaults to True
-    • notes: Optional string, max 200 characters
-"""
-
-
 def main() -> None:
     print("Space Station Data Validation")
     print("========================================")
 
-    StationOne = SpaceStation(
+    station_one = SpaceStation(
                   station_id="ISS001",
                   name="International Space Station",
                   crew_size=6,
@@ -42,23 +29,23 @@ def main() -> None:
                                                           "00:00+00:00"),
                   is_operational=True)
 
-    if StationOne.is_operational:
+    if station_one.is_operational:
         x = "Operational"
     else:
         x = "Shut-Down"
 
     print("Valid station created:")
-    print(f"ID: {StationOne.station_id}")
-    print(f"Name: {StationOne.name}")
-    print(f"Crew: {StationOne.crew_size} people")
-    print(f"Power: {StationOne.power_level}%")
-    print(f"Oxygen: {StationOne.oxygen_level}%")
+    print(f"ID: {station_one.station_id}")
+    print(f"Name: {station_one.name}")
+    print(f"Crew: {station_one.crew_size} people")
+    print(f"Power: {station_one.power_level}%")
+    print(f"Oxygen: {station_one.oxygen_level}%")
     print(f"Status: {x}")
 
     print("\n========================================")
 
     try:
-        StationTwo = SpaceStation(
+        station_two = SpaceStation(
                     station_id="12345678",
                     name="ISS",
                     crew_size=66,
@@ -72,7 +59,7 @@ def main() -> None:
         print(f"Expected validation error:\n{e}")
         return
 
-    print(f"Station Two ID: {StationTwo.station_id}")
+    print(f"Station Two ID: {station_two.station_id}")
 
 
 if __name__ == "__main__":
@@ -136,69 +123,8 @@ Include a main() function that:
 -------------------------------------------------
 
 G [general project instructions]
-• Your project must be written in Python 3.10 or later.
-• Your project must adhere to the flake8 coding standard.
-• All code must include comprehensive type annotations. Check this using mypy.
-• Exception handling should protect the data streams from corruption.
-• All standard classes and collections are authorized, along with their methods
-(int, str, list, dict, etc.).
-• All built-in functions are authorized. • Use pip as package manager
-• You must use Virtual environments (recommended: venv, virtualenv, or conda)
-• You must use which Pydantic 2.x for every exercise. (It must be installed
-via pip). Only other modules will be listed in each exercise’s Allowed section
-
-- Authorized imports: You may import JSON and CSV data from the tools
-directory. Standard library modules (json, csv, datetime, etc.) are allowed.
-
-- Important: This activity focuses on Pydantic v2 syntax. Avoid deprecated
-decorators like @validator - use @model_validator for custom validation
-instead.
-
-
--BaseModel
-The foundation of all Pydantic models. Inherit from BaseModel to create
-validated data classes.
--Field
-Use Field(...) to add validation constraints, descriptions, and default values
-to model attributes.
--model_validator
-Use the @model_validator(mode=’after’) decorator for custom validation logic
-that runs after Pydantic’s built-in validation. This replaces the deprecated
-@validator decorator from Pydantic v1.
 
 Notes:
 install pydantic and additionnal settings
     pip install pydantic pydantic-settings
-
-#################################################
-
-stock:
-Objective: Learn basic Pydantic model creation with BaseModel and
-Field validation.
-
-IV.1 Background
-The Cosmic Data Observatory monitors hundreds of space stations across the
-galaxy.
-Each station reports vital statistics including crew size, power levels,
-and operational status. Your first task is to create a validation system
-for this critical data.
-
-IV.2 Requirements
-SpaceStation Model
-Create a Pydantic model with these validated fields:
-• station_id: String, 3-10 characters
-• name: String, 1-50 characters
-• crew_size: Integer, 1-20 people
-• power_level: Float, 0.0-100.0 percent
-• oxygen_level: Float, 0.0-100.0 percent
-• last_maintenance: DateTime field
-• is_operational: Boolean, defaults to True
-• notes: Optional string, max 200 characters
-
-Demonstration Function
-Include a main() function that:
-• Creates a valid space station instance
-• Displays the station information clearly
-• Attempts to create an invalid station (e.g., crew_size > 20)
-• Shows the validation error message
 """
