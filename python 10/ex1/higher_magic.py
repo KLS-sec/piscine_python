@@ -10,16 +10,35 @@ def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
 
 
 def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
-    def boosted
+    def amplified(target: str, strengh: int) -> str:
+        a = base_spell(target, strengh * multiplier)
+        return a
+    return amplified
+
+
+def conditional_caster(condition: Callable, spell: Callable) -> Callable:
+    def conditionnal(target: str, strengh: int) -> str:
+        if condition(target, strengh):
+            return spell(target, strengh)
+        return "Spell fizzled"
+    return conditionnal
+
+
+def spell_sequence(spells: list[Callable]) -> Callable:
+    def chain_caster(target: str, strengh: int) -> str:
+        result = ""
+        for x in spells:
+            result = result + x(target, strengh) + " "
+        result = result[:-1]
+        return result
+    return chain_caster
 
 
 """
-def power_amplifier(base_spell: Callable, multiplier: int) -> Callable
-
-power_amplifier(base_spell, multiplier) - Amplify spell power:
-    • Returns a function with the same signature as the original spell
-    • Returns a new spell where the power is multiplied before casting.
-    • Example: mega_fireball = power_amplifier(fireball, 3)
+spell_sequence(spells) - Create spell sequence:
+    • Return a function that casts all spells in order
+    • Each spell receives the same arguments
+    • Returns a list of all spell results
 """
 
 
@@ -31,15 +50,6 @@ if __name__ == "__main__":
     main()
 
 """
-Exercice
-1 lire l exercice, lister les choses à apprendre
-2 remplir le work instructions
-3 Lire le w3school/autre concerne
-4 réorganiser les instructions de façon claire et compréhensible avec une
-checklist des éléments importants
-X si exo long organiser la liste des choses a faire (objectif clair + feedback)
-X regarder liste pauses
-
 Si bloqué:
 -Voir exemples
 -réexpliquer par GPT
@@ -66,23 +76,10 @@ spells
 [exercise instructions - original]
 
 The following functions must be implemented:
-    def conditional_caster(condition: Callable, spell: Callable) -> Callable
-    def spell_sequence(spells: list[Callable]) -> Callable
 
 Implementation Requirements
 
-power_amplifier(base_spell, multiplier) - Amplify spell power:
-    • Returns a function with the same signature as the original spell
-    • Returns a new spell where the power is multiplied before casting.
-    • Example: mega_fireball = power_amplifier(fireball, 3)
-conditional_caster(condition, spell) - Cast spell conditionally:
-    • Returns a new spell that only casts if a condition is True.
-    • If condition fails, return "Spell fizzled"
-    • Both condition and spell receive the same arguments
-spell_sequence(spells) - Create spell sequence:
-    • Return a function that casts all spells in order
-    • Each spell receives the same arguments
-    • Returns a list of all spell results
+
 
 #################################################
 G [general project instructions]
