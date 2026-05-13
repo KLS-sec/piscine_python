@@ -1,17 +1,88 @@
 #!/usr/bin/env python3
 
+
+def artifact_sorter(artifacts: list[dict]) -> list[dict]:
+    sorted_weapons: list[dict[str | int, str | int]] = sorted(
+        artifacts, key=lambda x: x["power"], reverse=True)
+    return sorted_weapons
+
+
+def power_filter(mages: list[dict], min_power: int) -> list[dict]:
+    strongests = list(filter(lambda x: x["power"] >= min_power, mages))
+    return strongests
+
+
+def spell_transformer(spells: list[str]) -> list[str]:
+    transformed = list(map(lambda x: "higher " + x, spells))
+    return transformed
+
+
+def mage_stats(mages: list[dict]) -> dict:
+    maximum = max(mages, key=lambda x: x["power"])
+    minimum = min(mages, key=lambda x: x["power"])
+    listed_values: list[int | float] = []
+    for x in mages:
+        listed_values.append(x["power"])
+    average: float = (sum(listed_values) / len(mages))
+    stats = {"maximum": maximum["power"], "minimum": minimum["power"],
+             "average": round(average, 2)}
+    return stats
+
+
+def main() -> None:
+    sword = {"name": "sword", "power": "25", "type": "cac"}
+    staff = {"name": "staff", "power": "20", "type": "magic"}
+    fist = {"name": "fist", "power": "15", "type": "cac"}
+    inventory = [sword, staff, fist]
+
+    alpha = {"name": "Alpha", "power": 25, "element": "fire"}
+    beta = {"name": "Beta", "power": 20, "element": "dark"}
+    omega = {"name": "Omega", "power": 15, "element": "light"}
+    players = [alpha, beta, omega]
+
+    spell_list = ["fire", "impact", "blast"]
+
+    sorted_inventory = artifact_sorter(inventory)
+    strongests = power_filter(players, 20)
+    stronger_spells = spell_transformer(spell_list)
+    stats = mage_stats(players)
+
+#################################################
+
+    print("Testing artifact sorter...")
+    for i, x in enumerate(sorted_inventory):
+        print(f"{x.get('name')} ({x.get('power')} power)", end="")
+        if i + 1 < len(sorted_inventory):
+            print(" comes before ", end="")
+    print("\n")
+
+    print("Testing power filter...")
+    for i, x in enumerate(strongests):
+        print(f"{x.get('name')} ({x.get('power')} power)", end="")
+        if i + 1 < len(strongests):
+            print(", ", end="")
+    print("\n")
+
+    print("Testing spell transformer...")
+    for i, y in enumerate(stronger_spells):
+        print(y, end="")
+        if i + 1 < len(stronger_spells):
+            print(", ", end="")
+    print("\n")
+
+    print("Testing mage stats...")
+    print(f"max: {stats['maximum']}")
+    print(f"min: {stats['minimum']}")
+    print(f"average: {round(stats['average'], 2)}")
+
+
 if __name__ == "__main__":
     main()
 
+
 """
-Exercice
-1 lire l exercice, lister les choses à apprendre
-2 remplir le work instructions
-3 Lire le w3school/autre concerne
-4 réorganiser les instructions de façon claire et compréhensible avec une
-checklist des éléments importants
-X si exo long organiser la liste des choses a faire (objectif clair + feedback)
-X regarder liste pauses
+Everything checked
+
 
 Si bloqué:
 -Voir exemples
@@ -33,7 +104,6 @@ generator
 [exercise instructions - organized + general goal + explanation by gpt]
 
 [exercise instructions - original]
-The Challenge
 Create a file lambda_spells.py that contains functions demonstrating lambda
 mastery:
 Function Signatures:
