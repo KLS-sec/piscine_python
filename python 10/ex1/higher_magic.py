@@ -3,9 +3,21 @@
 from collections.abc import Callable
 
 
+def fireball(target: str, power: int) -> str:
+    return (f"burn the {target} for {power} damages")
+
+
+def thunderblast(target: str, power: int) -> str:
+    return (f"shock the {target} for {power} damages")
+
+
+#################################
+
+
 def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
     def combinated(target: str, power: int) -> tuple[str, str]:
-        return (spell1(target, power), spell2(target, power))
+        result = (spell1(target, power).strip("\n"), spell2(target, power))
+        return result
     return combinated
 
 
@@ -25,31 +37,59 @@ def conditional_caster(condition: Callable, spell: Callable) -> Callable:
 
 
 def spell_sequence(spells: list[Callable]) -> Callable:
-    def chain_caster(target: str, strengh: int) -> str:
-        result = ""
+    def chain_caster(target: str, strengh: int) -> list[str]:
+        result = []
         for x in spells:
-            result = result + x(target, strengh) + " "
-        result = result[:-1]
+            result.append(x(target, strengh))
         return result
     return chain_caster
 
 
-"""
-spell_sequence(spells) - Create spell sequence:
-    • Return a function that casts all spells in order
-    • Each spell receives the same arguments
-    • Returns a list of all spell results
-"""
+##############################################
 
 
 def main() -> None:
-    pass
+    print(fireball("dragon", 10))
+    print(thunderblast("lich", 15))
+    print("")
+
+    blastfire = spell_combiner(fireball, thunderblast)
+    a = blastfire("dragon", 15)
+    print("Testing spell combiner...")
+    print("Combined spell result: ", a[0], ", ", a[1], sep="")
+    print("")
+
+    hellfire = power_amplifier(fireball, 3)
+    b = hellfire("dragon", 15)
+    print("Testing power amplifier...")
+    print(b)
+    print("")
+
+    def condition(target: str, strengh: int) -> bool:
+        if strengh > 5:
+            return True
+        target = target
+        return False
+
+    checker = conditional_caster(condition, fireball)
+    print("Testing conditionnal caster...")
+    print(checker("dragon", 1))
+    print(checker("dragon", 15))
+    print("")
+
+    ammo_clip = [fireball, thunderblast, fireball]
+    chain = spell_sequence(ammo_clip)
+    print("testing spell sequence")
+    for x in chain("dragon", 15):
+        print(x)
 
 
 if __name__ == "__main__":
     main()
 
 """
+checked
+
 Si bloqué:
 -Voir exemples
 -réexpliquer par GPT
