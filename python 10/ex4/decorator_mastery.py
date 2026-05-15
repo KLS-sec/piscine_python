@@ -41,11 +41,10 @@ def spell_timer(func: Callable) -> Callable:
 def power_validator(min_power: int) -> Callable:
     def decorator(func: Callable) -> Callable:
         @functools.wraps(func)
-        def wrapper(power: int, *karg, **kwarg):
+        def wrapper(self, spell_name: str, power: int):
             if power >= min_power:
-                return func(power, *karg, **kwarg)
-            else:
-                return "Insufficient power for this spell"
+                return func(self, spell_name, power)
+            return "Insufficient power for this spell"
         return wrapper
     return decorator
 
@@ -108,7 +107,8 @@ def retry_spell(max_attempts: int) -> Callable:
                 except Exception:
                     attempt += 1
                     if attempt < max_attempts:
-                        print(f"Spell failed, retrying... (attempt {x}/{max_attempts})")
+                        print(f"Spell failed, retrying... (attempt"
+                            " {x}/{max_attempts})")
             return f"Spell casting failed after {max_attempts} attempts"
         return wrapper
     return decorator
@@ -117,8 +117,12 @@ def retry_spell(max_attempts: int) -> Callable:
 
 class MageGuild:
     @staticmethod
-    def validate_mage_name(name: str) -> bool
-    def cast_spell(self, spell_name: str, power: int) -> str
+    def validate_mage_name(name: str) -> bool:
+        return len(name) >= 3 and name.replace(" ", "").isalpha()
+
+    @power_validator(10)
+    def cast_spell(self, spell_name: str, power: int) -> str:
+        return f"Successfully cast {spell_name} with {power} power"
 
 
 """
@@ -143,7 +147,39 @@ class MageGuild:
 
 
 def main() -> None:
-    pass
+    print("Testing spell timer...")
+
+    @spell_timer
+    def fireball(target: str) -> str:
+        time.sleep(0.1)
+        return f"Fireball cast on {target}"
+
+    result = fireball("dragon")
+    print("Result:", result)
+    print()
+
+    print("Testing retry spell...")
+
+    import random
+
+    @retry_spell(3)
+    def unstable_spell() -> str:
+        if random.random() < 0.7:
+            raise ValueError("fail")
+        return "Waaaaaaagh spelled !"
+
+    print(unstable_spell())
+    print()
+
+    print("Testing MageGuild...")
+
+    guild = MageGuild()
+
+    print(MageGuild.validate_mage_name("Merlin"))
+    print(MageGuild.validate_mage_name("Al"))
+
+    print(guild.cast_spell("Lightning", 15))
+    print(guild.cast_spell("Lightning", 5))
 
 
 if __name__ == "__main__":
