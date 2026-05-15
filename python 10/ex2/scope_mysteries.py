@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
+from typing import Any
 from collections.abc import Callable
 
 
-def mage_counter() -> Callable:
+def mage_counter() -> Callable[[], int]:
     x = 0
 
     def counter() -> int:
@@ -13,7 +14,7 @@ def mage_counter() -> Callable:
     return counter
 
 
-def spell_accumulator(initial_power: int) -> Callable:
+def spell_accumulator(initial_power: int) -> Callable[[int], int]:
     x = initial_power
 
     def battery(charge: int) -> int:
@@ -23,7 +24,7 @@ def spell_accumulator(initial_power: int) -> Callable:
     return battery
 
 
-def enchantment_factory(enchantment_type: str) -> Callable:
+def enchantment_factory(enchantment_type: str) -> Callable[[str], str]:
     x = enchantment_type
 
     def booster(target: str) -> str:
@@ -34,13 +35,13 @@ def enchantment_factory(enchantment_type: str) -> Callable:
     return booster
 
 
-def memory_vault() -> dict[str, Callable]:
-    memories = {}
+def memory_vault() -> dict[str, Callable[..., Any]]:
+    memories: dict[str, Any] = {}
 
-    def store(key: str, value) -> None:
+    def store(key: str, value: Any) -> None:
         memories[key] = value
 
-    def recall(key: str):
+    def recall(key: str) -> Any:
         try:
             return memories.get(key, "Memory not found")
         except Exception:

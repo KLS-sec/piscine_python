@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 
 
-def artifact_sorter(artifacts: list[dict]) -> list[dict]:
-    sorted_weapons: list[dict[str | int, str | int]] = sorted(
-        artifacts, key=lambda x: x["power"], reverse=True)
+def artifact_sorter(
+        artifacts: list[dict[str, str | int]]) -> list[dict[str, str | int]]:
+    sorted_weapons: list[dict[str, str | int]] = sorted(
+        artifacts, key=lambda x: int(x["power"]), reverse=True)
     return sorted_weapons
 
 
-def power_filter(mages: list[dict], min_power: int) -> list[dict]:
-    strongests = list(filter(lambda x: x["power"] >= min_power, mages))
+def power_filter(
+        mages: list[dict[str, str | int]],
+        min_power: int) -> list[dict[str, str | int]]:
+    strongests: list[dict[str, str | int]] = list(
+        filter(lambda x: int(x["power"]) >= min_power, mages))
     return strongests
 
 
@@ -17,28 +21,33 @@ def spell_transformer(spells: list[str]) -> list[str]:
     return transformed
 
 
-def mage_stats(mages: list[dict]) -> dict:
-    maximum = max(mages, key=lambda x: x["power"])
-    minimum = min(mages, key=lambda x: x["power"])
+def mage_stats(mages: list[dict[str, str | int]]) -> dict[str, int | float]:
+    maximum = max(mages, key=lambda x: int(x["power"]))
+    minimum = min(mages, key=lambda x: int(x["power"]))
     listed_values: list[int | float] = []
     for x in mages:
-        listed_values.append(x["power"])
+        listed_values.append(int(x["power"]))
     average: float = (sum(listed_values) / len(mages))
-    stats = {"maximum": maximum["power"], "minimum": minimum["power"],
+    stats = {"maximum": int(maximum["power"]),
+             "minimum": int(minimum["power"]),
              "average": round(average, 2)}
     return stats
 
 
 def main() -> None:
-    sword = {"name": "sword", "power": "25", "type": "cac"}
-    staff = {"name": "staff", "power": "20", "type": "magic"}
-    fist = {"name": "fist", "power": "15", "type": "cac"}
-    inventory = [sword, staff, fist]
+    sword: dict[str, str | int] = {"name": "sword", "power": 25, "type": "cac"}
+    staff: dict[str, str | int] = {
+        "name": "staff", "power": 20, "type": "magic"}
+    fist: dict[str, str | int] = {"name": "fist", "power": 15, "type": "cac"}
+    inventory: list[dict[str, str | int]] = [sword, staff, fist]
 
-    alpha = {"name": "Alpha", "power": 25, "element": "fire"}
-    beta = {"name": "Beta", "power": 20, "element": "dark"}
-    omega = {"name": "Omega", "power": 15, "element": "light"}
-    players = [alpha, beta, omega]
+    alpha: dict[str, str | int] = {
+        "name": "Alpha", "power": 25, "element": "fire"}
+    beta: dict[str, str | int] = {
+        "name": "Beta", "power": 20, "element": "dark"}
+    omega: dict[str, str | int] = {
+        "name": "Omega", "power": 15, "element": "light"}
+    players: list[dict[str, str | int]] = [alpha, beta, omega]
 
     spell_list = ["fire", "impact", "blast"]
 

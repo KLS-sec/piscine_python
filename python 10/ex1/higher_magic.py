@@ -14,21 +14,27 @@ def thunderblast(target: str, power: int) -> str:
 #################################
 
 
-def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
+def spell_combiner(spell1: Callable[[str, int], str],
+                   spell2: Callable[[str, int], str]
+                   ) -> Callable[[str, int], tuple[str, str]]:
     def combinated(target: str, power: int) -> tuple[str, str]:
         result = (spell1(target, power).strip("\n"), spell2(target, power))
         return result
     return combinated
 
 
-def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
+def power_amplifier(base_spell: Callable[[str, int], str],
+                    multiplier: int
+                    ) -> Callable[[str, int], str]:
     def amplified(target: str, strengh: int) -> str:
         a = base_spell(target, strengh * multiplier)
         return a
     return amplified
 
 
-def conditional_caster(condition: Callable, spell: Callable) -> Callable:
+def conditional_caster(condition: Callable[[str, int], bool],
+                       spell: Callable[[str, int], str]
+                       ) -> Callable[[str, int], str]:
     def conditionnal(target: str, strengh: int) -> str:
         if condition(target, strengh):
             return spell(target, strengh)
@@ -36,7 +42,8 @@ def conditional_caster(condition: Callable, spell: Callable) -> Callable:
     return conditionnal
 
 
-def spell_sequence(spells: list[Callable]) -> Callable:
+def spell_sequence(spells: list[Callable[[str, int], str]]
+                   ) -> Callable[[str, int], list[str]]:
     def chain_caster(target: str, strengh: int) -> list[str]:
         result = []
         for x in spells:
@@ -77,7 +84,8 @@ def main() -> None:
     print(checker("dragon", 15))
     print("")
 
-    ammo_clip = [fireball, thunderblast, fireball]
+    ammo_clip: list[Callable[[str, int], str]] = [fireball,
+                                                  thunderblast, fireball]
     chain = spell_sequence(ammo_clip)
     print("testing spell sequence")
     for x in chain("dragon", 15):
