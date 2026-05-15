@@ -1,5 +1,147 @@
 #!/usr/bin/env python3
 
+import time
+import functools
+from collections.abc import Callable
+
+
+def spell_timer(func: Callable) -> Callable:
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"Casting{func.__name__}...")
+        s = time.time()
+        result = func(*args, **kwargs)
+        e = time.time()
+        print(f"Spell completed in {e - s:.3f} seconds")
+        return result
+    return wrapper
+
+
+"""
+spell_timer(func) - Time execution decorator:
+Create a decorator that measures function execution time
+• Print "Casting function_name..." before execution
+• Print "Spell completed in X.XXX seconds" after execution (3 decimal places)
+• Use functools.wraps to preserve original function metadata
+• Return the original function’s result
+
+def spell_timer(func: Callable) -> Callable:
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"Casting {func.__name__}...")
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"Spell completed in {end - start:.3f} seconds")
+        return result
+    return wrapper
+"""
+
+
+def power_validator(min_power: int) -> Callable:
+    def decorator(func: Callable) -> Callable:
+        @functools.wraps(func)
+        def wrapper(power: int, *karg, **kwarg):
+            if power >= min_power:
+                return func(power, *karg, **kwarg)
+            else:
+                return "Insufficient power for this spell"
+        return wrapper
+    return decorator
+
+
+"""
+power_validator(min_power) - Parameterized validation decorator:
+Create a decorator factory that validates power levels
+• Applied on a standalone function whose first argument is power.
+• If power is valid (>= min_power), execute the function normally
+• If invalid, return "Insufficient power for this spell"
+• Use functools.wraps properly
+
+def power_validator(min_power: int) -> Callable:
+    def decorator(func: Callable) -> Callable:
+        @functools.wraps(func)
+        def wrapper(power: int, *args, **kwargs):
+            if power < min_power:
+                return "Insufficient power for this spell"
+            return func(power, *args, **kwargs)
+        return wrapper
+    return decorator
+"""
+
+
+def retry_spell(max_attempts: int) -> Callable:
+    def decorator(func: Callable):
+        @functools.wraps(func)
+        def wrapper(*args, **kargs):
+            x = 0
+            while x < max_attempts:
+                try:
+                    return func(*args, **kargs)
+                except Exception:
+                    x += 1
+                    if x < max_attempts:
+                        print("Spell failed, retrying... (attempt"
+                              f" {x}/{max_attempts})")
+            return f"Spell casting failed after {max_attempts} attempts"
+        return wrapper
+    return decorator
+
+
+"""
+retry_spell(max_attempts) - Retry decorator:
+Create a decorator that retries failed spells
+• If function raises an exception, retry up to max_attempts times
+• Print "Spell failed, retrying... (attempt n/max_attempts)"
+• If all attempts fail:
+return "Spell casting failed after max_attempts attempts"
+• If one attempt succeeds, return its result normally
+
+def retry_spell(max_attempts: int) -> Callable:
+    def decorator(func: Callable) -> Callable:
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            attempt = 0
+            while attempt < max_attempts:
+                try:
+                    return func(*args, **kwargs)
+                except Exception:
+                    attempt += 1
+                    if attempt < max_attempts:
+                        print(f"Spell failed, retrying... (attempt {x}/{max_attempts})")
+            return f"Spell casting failed after {max_attempts} attempts"
+        return wrapper
+    return decorator
+"""
+
+
+class MageGuild:
+    @staticmethod
+    def validate_mage_name(name: str) -> bool
+    def cast_spell(self, spell_name: str, power: int) -> str
+
+
+"""
+MageGuild class - Demonstrate staticmethod:
+• validate_mage_name(name) - Static method that checks if name is valid
+• Name is valid if it’s at least 3 characters and contains only letters/spaces
+• cast_spell(self, spell_name, power) - Instance method
+• Should use the power_validator decorator with min_power=10
+• When power is valid, return "Successfully cast spell_name with <power> power"
+• Otherwise return "Insufficient power for this spell"
+
+class MageGuild:
+    @staticmethod
+    def validate_mage_name(name: str) -> bool:
+        return len(name) >= 3 and name.replace(" ", "").isalpha()
+
+    @power_validator(10)
+    def cast_spell(self, spell_name: str, power: int) -> str:
+        return f"Successfully cast {spell_name} with {power} power"
+
+"""
+
+
 def main() -> None:
     pass
 
@@ -37,44 +179,9 @@ decorator_mastery.py
 [exercise instructions - organized + general goal + explanation by gpt]
 
 [exercise instructions - original]
-Signatures:
-def spell_timer(func: Callable) -> Callable
-def power_validator(min_power: int) -> Callable
-def retry_spell(max_attempts: int) -> Callable
-class MageGuild:
-@staticmethod
-def validate_mage_name(name: str) -> bool
-def cast_spell(self, spell_name: str, power: int) -> str
 
 
-Implementation Requirements
-
-spell_timer(func) - Time execution decorator:
-• Create a decorator that measures function execution time
-• Print "Casting function_name..." before execution
-• Print "Spell completed in X.XXX seconds" after execution (3 decimal places)
-• Use functools.wraps to preserve original function metadata
-• Return the original function’s result
-power_validator(min_power) - Parameterized validation decorator:
-• Create a decorator factory that validates power levels
-• Applied on a standalone function whose first argument is power.
-• If power is valid (>= min_power), execute the function normally
-• If invalid, return "Insufficient power for this spell"
-• Use functools.wraps properly
-retry_spell(max_attempts) - Retry decorator:
-• Create a decorator that retries failed spells
-• If function raises an exception, retry up to max_attempts times
-• Print "Spell failed, retrying... (attempt n/max_attempts)"
-• If all attempts fail, return "Spell casting failed after max_attempts attempts"
-• If one attempt succeeds, return its result normally
-MageGuild class - Demonstrate staticmethod:
-• validate_mage_name(name) - Static method that checks if name is valid
-• Name is valid if it’s at least 3 characters and contains only letters/spaces
-• cast_spell(self, spell_name, power) - Instance method
-• Should use the power_validator decorator with min_power=10
-• When power is valid, return "Successfully cast spell_name with <power> power"
-• Otherwise return "Insufficient power for this spell"
-
+####################################################
 
 G [general project instructions]
 IV.1 Python Requirements
