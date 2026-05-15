@@ -3,11 +3,12 @@
 import time
 import functools
 from collections.abc import Callable
+from typing import Any
 
 
-def spell_timer(func: Callable) -> Callable:
+def spell_timer(func: Callable[..., Any]) -> Callable[..., Any]:
     @functools.wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         print(f"Casting{func.__name__}...")
         s = time.time()
         result = func(*args, **kwargs)
@@ -38,10 +39,11 @@ def spell_timer(func: Callable) -> Callable:
 """
 
 
-def power_validator(min_power: int) -> Callable:
-    def decorator(func: Callable) -> Callable:
+def power_validator(min_power: int) -> Callable[[Callable[..., str]],
+                                                Callable[..., str]]:
+    def decorator(func: Callable[..., str]) -> Callable[..., str]:
         @functools.wraps(func)
-        def wrapper(self, spell_name: str, power: int):
+        def wrapper(self: Any, spell_name: str, power: int) -> Any:
             if power >= min_power:
                 return func(self, spell_name, power)
             return "Insufficient power for this spell"
@@ -69,14 +71,15 @@ def power_validator(min_power: int) -> Callable:
 """
 
 
-def retry_spell(max_attempts: int) -> Callable:
-    def decorator(func: Callable):
+def retry_spell(max_attempts: int) -> Callable[
+     [Callable[..., str]], Callable[..., str]]:
+    def decorator(func: Callable[..., str]) -> Callable[..., str]:
         @functools.wraps(func)
-        def wrapper(*args, **kargs):
+        def wrapper(*args: Any, **kwargs: Any) -> str:
             x = 0
             while x < max_attempts:
                 try:
-                    return func(*args, **kargs)
+                    return func(*args, **kwargs)
                 except Exception:
                     x += 1
                     if x < max_attempts:
