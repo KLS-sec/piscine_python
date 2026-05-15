@@ -3,9 +3,12 @@
 from operator import add
 from operator import mul
 
+from typing import Any
+
 from collections.abc import Callable
 
 import functools
+from functools import lru_cache
 
 
 def spell_reducer(spells: list[int], operation: str) -> int:
@@ -29,24 +32,67 @@ def spell_reducer(spells: list[int], operation: str) -> int:
 
 def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
     returner = {}
-    returner["0"] = functools.partial(base_enchantment, 15, "fire")
-    returner["1"] = functools.partial(base_enchantment, 20, "water")
-    returner["2"] = functools.partial(base_enchantment, 25, "light")
+    returner["0"] = functools.partial(base_enchantment, 50, "fire")
+    returner["1"] = functools.partial(base_enchantment, 50, "water")
+    returner["2"] = functools.partial(base_enchantment, 50, "light")
     return returner
 
 
+@lru_cache(maxsize=50)
+def memoized_fibonacci(n: int) -> int:
+    if n < 2:
+        return n
+    return memoized_fibonacci(n-1) + memoized_fibonacci(n-2)
+
+
+def spell_dispatcher() -> Callable[[Any], str]:
+    pass
+
+
 """
-partial_enchanter(base_enchantment) - Create partial applications:
-• Take a base enchantment function with signature
-(power: int, element: str, target: str) -> str
-• Use functools.partial to create 3 specialized versions
-• Each version pre-filling power=50 and the element
+You can verify caching works via memoized_fibonacci.cache_info().
+spell_dispatcher() - Create single dispatch system:
+• Use decorator functools.singledispatch to create a spell system
+• The base function receives Any and handles unknown spell type
+• Handle different types: int (damage spell), str (enchantment),
+list (multi-cast)
+• Return the dispatcher function
+• Each type should have appropriate spell behavior
+
+def spell_dispatcher() -> Callable[[Any], str]:
+
+    @singledispatch
+    def dispatcher(spell: Any) -> str:
+        return "Unknown spell type"
+
+    @dispatcher.register
+    def _(spell: int) -> str:
+        return f"Damage spell: {spell} damage"
+
+    @dispatcher.register
+    def _(spell: str) -> str:
+        return f"Enchantment: {spell}"
+
+    @dispatcher.register
+    def _(spell: list) -> str:
+        return f"Multi-cast: {len(spell)} spells"
+
+    return dispatcher
+
+    main
+    dispatcher = spell_dispatcher()
+
+    print(dispatcher(42))
+    print(dispatcher("fireball"))
+    print(dispatcher(["fireball", "heal", "shield"]))
+    print(dispatcher(3.14))
 """
 
 
 def main() -> None:
-    operations = [1, 2, 3, 4]
 
+    print("Test spell reducer")
+    operations = [1, 2, 3, 4]
     addition = spell_reducer(operations, "add")
     maximum = spell_reducer(operations, "max")
     minimum = spell_reducer(operations, "min")
@@ -67,6 +113,11 @@ def main() -> None:
     blaster = partial_enchanter(blast)
     for x in blaster:
         print(blaster[x]("dragon"))
+
+    print("\nTest lru_cache")
+    print(memoized_fibonacci(6))
+    print(memoized_fibonacci(8))
+    print(memoized_fibonacci(10))
 
 
 if __name__ == "__main__":
@@ -102,24 +153,6 @@ https://www.geeksforgeeks.org/python/partial-functions-python/
 [exercise instructions - organized + general goal + explanation by gpt]
 
 [exercise instructions - original]
-def memoized_fibonacci(n: int) -> int
-def spell_dispatcher() -> Callable[[Any], str]
-
-memoized_fibonacci(n) - Cached fibonacci:
-• Use functools.lru_cache decorator for memoization
-• Implement fibonacci sequence calculation
-• Function should return the nth Fibonacci number
-• The cache should improve performance for repeated calls
-• Return the nth fibonacci number
-You can verify caching works via memoized_fibonacci.cache_info().
-spell_dispatcher() - Create single dispatch system:
-• Use decorator functools.singledispatch to create a spell system
-• The base function receives Any and handles unknown spell type
-• Handle different types: int (damage spell), str (enchantment),
-list (multi-cast)
-• Return the dispatcher function
-• Each type should have appropriate spell behavior
-
 
 G [general project instructions]
 IV.1 Python Requirements
