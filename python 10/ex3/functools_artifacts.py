@@ -30,6 +30,12 @@ def spell_reducer(spells: list[int], operation: str) -> int:
     raise ValueError("Unknown operation")
 
 
+"""
+reduce is an acumulator, it aply the effect to every
+elements one after the other
+"""
+
+
 def partial_enchanter(
         base_enchantment: Callable[..., str]) -> dict[str, Callable[..., str]]:
     returner: dict[str, Callable[..., str]] = {}
@@ -42,11 +48,22 @@ def partial_enchanter(
     return returner
 
 
+"""
+pre fill with only a part of the inputs
+"""
+
+
 @lru_cache(maxsize=50)
 def memoized_fibonacci(n: int) -> int:
     if n < 2:
         return n
     return memoized_fibonacci(n-1) + memoized_fibonacci(n-2)
+
+
+"""
+lru_cache force the memorisation of the result of a function to be
+reused instead of recalculated
+"""
 
 
 def spell_dispatcher() -> Callable[[Any], str]:
@@ -67,6 +84,12 @@ def spell_dispatcher() -> Callable[[Any], str]:
         return (f"Cast {len(spell)} spells")
 
     return dispatcher
+
+
+"""
+create a proto function with different
+reactions depending on vthe input type
+"""
 
 
 def main() -> None:

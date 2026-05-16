@@ -28,9 +28,9 @@ def mage_stats(mages: list[dict[str, str | int]]) -> dict[str, int | float]:
     for x in mages:
         listed_values.append(int(x["power"]))
     average: float = (sum(listed_values) / len(mages))
-    stats = {"maximum": int(maximum["power"]),
-             "minimum": int(minimum["power"]),
-             "average": round(average, 2)}
+    stats = {"max_power": int(maximum["power"]),
+             "min_power": int(minimum["power"]),
+             "avg_power": round(average, 2)}
     return stats
 
 
@@ -80,9 +80,9 @@ def main() -> None:
     print("\n")
 
     print("Testing mage stats...")
-    print(f"max: {stats['maximum']}")
-    print(f"min: {stats['minimum']}")
-    print(f"average: {round(stats['average'], 2)}")
+    print(f"max: {stats['max_power']}")
+    print(f"min: {stats['min_power']}")
+    print(f"average: {round(stats['avg_power'], 2)}")
 
 
 if __name__ == "__main__":
@@ -91,6 +91,10 @@ if __name__ == "__main__":
 
 """
 Everything checked
+
+lesson:
+lambda cree une pseudo fonction facile a utiliser
+ca permet de ne pas avoir a creer un def func(): quelquepart
 
 
 Si bloqué:

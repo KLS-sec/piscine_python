@@ -42,6 +42,13 @@ def conditional_caster(condition: Callable[[str, int], bool],
     return conditionnal
 
 
+"""
+condition() is referenced in a memory cell allocated to contitionnal
+so it is like a decorater allocated to it
+also it does not store the function or the result, only a reference to it
+"""
+
+
 def spell_sequence(spells: list[Callable[[str, int], str]]
                    ) -> Callable[[str, int], list[str]]:
     def chain_caster(target: str, strengh: int) -> list[str]:
@@ -56,6 +63,7 @@ def spell_sequence(spells: list[Callable[[str, int], str]]
 
 
 def main() -> None:
+    print("Testing basic spells")
     print(fireball("dragon", 10))
     print(thunderblast("lich", 15))
     print("")
