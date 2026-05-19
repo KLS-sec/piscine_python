@@ -35,10 +35,12 @@ def mage_stats(mages: list[dict[str, str | int]]) -> dict[str, int | float]:
 
 
 def main() -> None:
-    sword: dict[str, str | int] = {"name": "sword", "power": 25, "type": "cac"}
+    sword: dict[str, str | int] = {
+        "name": "sword", "power": 25, "type": "cac"}
     staff: dict[str, str | int] = {
         "name": "staff", "power": 20, "type": "magic"}
-    fist: dict[str, str | int] = {"name": "fist", "power": 15, "type": "cac"}
+    fist: dict[str, str | int] = {
+        "name": "fist", "power": 15, "type": "cac"}
     inventory: list[dict[str, str | int]] = [sword, staff, fist]
 
     alpha: dict[str, str | int] = {

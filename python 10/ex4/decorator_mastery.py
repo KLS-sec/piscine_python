@@ -4,6 +4,7 @@ import time
 import functools
 from collections.abc import Callable
 from typing import Any
+import random
 
 
 """
@@ -168,14 +169,13 @@ def main() -> None:
 
     print("Testing retry spell...")
 
-    import random
-
     @retry_spell(3)
     def unstable_spell() -> str:
         if random.random() < 0.7:
             raise ValueError("fail")
         return "Waaaaaaagh spelled !"
-
+#  calling unstable spell mean: call retry_spell(3)
+#  the retry spell call decorator()
     print(unstable_spell())
     print()
 

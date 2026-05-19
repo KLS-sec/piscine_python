@@ -42,10 +42,7 @@ def memory_vault() -> dict[str, Callable[..., Any]]:
         memories[key] = value
 
     def recall(key: str) -> Any:
-        try:
-            return memories.get(key, "Memory not found")
-        except Exception:
-            return "Memory not found"
+        return memories.get(key)
 
     return {"store": store, "recall": recall, }
 

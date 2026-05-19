@@ -79,8 +79,8 @@ def spell_dispatcher() -> Callable[[Any], str]:
     def _(spell: str) -> str:
         return "super" + spell
 
-    @dispatcher.register
-    def _(spell: list[Any]) -> str:
+    @dispatcher.register(list)
+    def _(spell: list[str]) -> str:
         return (f"Cast {len(spell)} spells")
 
     return dispatcher
@@ -88,7 +88,7 @@ def spell_dispatcher() -> Callable[[Any], str]:
 
 """
 create a proto function with different
-reactions depending on vthe input type
+reactions depending on the input type
 """
 
 
